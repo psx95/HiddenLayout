@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HiddenLayoutView">
+        <attr name="layout_under" format="reference"/>
+        <attr name="layout_over" format="reference"/>
+    </declare-styleable>
+</resources>

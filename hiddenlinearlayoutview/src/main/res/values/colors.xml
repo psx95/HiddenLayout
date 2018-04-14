@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_md_amber_500">#FFC107</color>
+    <color name="color_md_amber_700">#FFA000</color>
+    <color name="color_md_orange_900">#E65100</color>
+    <color name="color_md_white_1000">#FFFFFF</color>
+</resources>
