@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.psx.hiddenlinearlayoutview.HiddenLayoutView;
 
@@ -25,6 +26,7 @@ public class FlingAnimationUtil {
     private GestureDetector gestureDetector;
     private float pressedX, pressedY;
     private long clickStart = 0L;
+    private View.OnTouchListener onTouchListener;
 
     public FlingAnimationUtil(Context context, View view) {
         displayMetrics = new DisplayMetrics();
@@ -39,11 +41,12 @@ public class FlingAnimationUtil {
                 .setMinValue(-displayMetrics.widthPixels / 4)
                 .setMaxValue(0);
         gestureDetector = new GestureDetector(activityContext, prepareGestureDetectorListener());
+        initTouchListener();
         setTouchListenerOnView(v);
     }
 
-    private void setTouchListenerOnView(View v) {
-        v.setOnTouchListener((v1, event) -> {
+    private void initTouchListener() {
+        onTouchListener = (v, event) -> {
             boolean clickOccoured = false;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -60,12 +63,26 @@ public class FlingAnimationUtil {
                     break;
             }
             if (clickOccoured) {
-                HiddenLayoutView.overLayoutEventListener.onClickRecieved();
+                HiddenLayoutView.overLayoutEventListener.onOverLayoutClickRecieved(v);
             } else {
                 gestureDetector.onTouchEvent(event);
             }
             return true;
-        });
+        };
+    }
+
+    private void setTouchListenerOnView(View v) {
+        if (v instanceof ViewGroup) {
+            Log.d(TAG,"FOUND multiple children inside view");
+            for (int i = 0; i < ((ViewGroup)v).getChildCount(); i++){
+                View childView = ((ViewGroup)v).getChildAt(i);
+                childView.setOnTouchListener(onTouchListener);
+                Log.d(TAG," ID "+childView.getId() + " found at pos "+i);
+            }
+        } else {
+            Log.d(TAG,"No Child views");
+            v.setOnTouchListener(onTouchListener);
+        }
     }
 
     private GestureDetector.OnGestureListener prepareGestureDetectorListener() {

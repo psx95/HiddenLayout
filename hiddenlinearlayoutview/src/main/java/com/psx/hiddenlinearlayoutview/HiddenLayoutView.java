@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.psx.hiddenlinearlayoutview.Interfaces.AnimationUpdateListeners;
@@ -55,13 +54,17 @@ public class HiddenLayoutView extends LinearLayout{
         } else {
             Log.d(TAG,"Layout inflater null");
         }
+        initListeners();
         setupListeners();
         setupAnimations();
     }
 
     private void setupListeners() {
-        overLayoutEventListener = () -> {};
-        underLayoutEventListener = () -> {};
+        inflatedUnderLayout.setOnClickListener(v -> underLayoutEventListener.onUnderLayoutClickRecieved(v));
+    }
+
+    private void initListeners() {
+        overLayoutEventListener = (view) -> {};
     }
 
     private void setupAnimations() {
@@ -82,6 +85,10 @@ public class HiddenLayoutView extends LinearLayout{
         } else {
             Log.d(TAG,"Attribute set is null ");
         }
+    }
+
+    public void closeRightHiddenView() {
+        flingAnimation.setStartVelocity(1000).start();
     }
 
     public View getInflatedUnderLayout() {

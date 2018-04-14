@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_md_amber_500">
+            android:background="@color/color_md_light_green_300">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -47,13 +47,13 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/color_md_amber_700"/>
+            android:background="@color/color_md_light_green_500"/>
 
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_md_amber_500">
+            android:background="@color/color_md_light_green_300">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -83,13 +83,13 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/color_md_amber_700"/>
+            android:background="@color/color_md_light_green_500"/>
 
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_md_amber_500">
+            android:background="@color/color_md_light_green_300">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -119,13 +119,13 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/color_md_amber_700" />
+            android:background="@color/color_md_light_green_500" />
 
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_md_amber_500"
+            android:background="@color/color_md_light_green_300"
             android:visibility="visible">
 
             <RelativeLayout

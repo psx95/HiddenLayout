@@ -22,6 +22,7 @@
 bin/
 gen/
 out/
+.idea/caches/
 
 # Gradle files
 .gradle/
