@@ -4,5 +4,6 @@
         <attr name="layout_under" format="reference"/>
         <attr name="layout_over" format="reference"/>
         <attr name="revealPercentageViewRight" format="float" />
+        <attr name="scaleHiddenView" format="boolean" />
     </declare-styleable>
 </resources>

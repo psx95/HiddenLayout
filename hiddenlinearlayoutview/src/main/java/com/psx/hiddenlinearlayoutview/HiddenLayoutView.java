@@ -28,6 +28,7 @@ public class HiddenLayoutView extends LinearLayout{
     private FlingAnimation flingAnimation;
     private SpringAnimation springAnimation;
     private float revealViewPercentageRight;
+    private boolean scaleHiddenView;
     public static AnimationUpdateListeners.OverLayoutEventListener overLayoutEventListener;
     public static AnimationUpdateListeners.UnderLayoutEventListener underLayoutEventListener;
 
@@ -74,7 +75,7 @@ public class HiddenLayoutView extends LinearLayout{
     private void setupAnimations() {
         /*FlingAnimationUtil flingAnimationUtil = new FlingAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight);
         flingAnimation = flingAnimationUtil.getFlingAnimation();*/
-        SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout, inflatedUnderLayout.findViewById(R.id.revealed_view_right));
+        SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout, inflatedUnderLayout.findViewById(R.id.revealed_view_right),scaleHiddenView);
         springAnimation = springAnimationUtil.getxAnimation();
     }
 
@@ -86,6 +87,7 @@ public class HiddenLayoutView extends LinearLayout{
                 layout_over = typedArray.getResourceId(R.styleable.HiddenLayoutView_layout_over,R.layout.over_layout_default);
                 layout_under = typedArray.getResourceId(R.styleable.HiddenLayoutView_layout_under,R.layout.under_layout_default);
                 revealViewPercentageRight = typedArray.getFloat(R.styleable.HiddenLayoutView_revealPercentageViewRight,0.2f);
+                scaleHiddenView = typedArray.getBoolean(R.styleable.HiddenLayoutView_scaleHiddenView,false);
             } finally {
                 typedArray.recycle();
             }

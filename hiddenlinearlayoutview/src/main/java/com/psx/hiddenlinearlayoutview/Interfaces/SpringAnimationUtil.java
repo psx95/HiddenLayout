@@ -25,16 +25,18 @@ public class SpringAnimationUtil {
     private Context context;
 
     private boolean hiddenViewRevealed = false;
+    private boolean scalehiddenView;
     private View underLayout;
     //private float dY;
 
-    public SpringAnimationUtil(Context context, View animatedView, View underLayout) {
+    public SpringAnimationUtil(Context context, View animatedView, View underLayout, boolean scaleHiddenView) {
         if (animatedView != null) {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity)animatedView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             finalPosDiff = displayMetrics.widthPixels/4;
             this.animatedView = animatedView;
             this.underLayout = underLayout;
+            this.scalehiddenView = scaleHiddenView;
             animatedView.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
             this.animatedView.setOnTouchListener(touchListener);
             this.context = context;
@@ -66,22 +68,12 @@ public class SpringAnimationUtil {
                 case MotionEvent.ACTION_MOVE:
                     float movement = event.getRawX() + dX;
                     float scaleFactor = movement > 0 ? -0.04f : 0.04f;
+                    if (!scalehiddenView)
+                        scaleFactor = 0;
                     if (!hiddenViewRevealed && movement < 0) {
-                        if (Math.abs(movement) <= finalPosDiff)
-                            animatedView.animate().x(movement/1.5f).setDuration(0).start();
-                        else {
-                            underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
-                            animatedView.animate().x(movement/1.5f).setDuration(0).start();
-                        }
-                        Log.d(TAG,"Movement Drag to revealy view "+movement+ " dX "+dX);
+                        moveAndScale(movement, scaleFactor);
                     }  else if (hiddenViewRevealed) {
-                        if (Math.abs(movement) <= finalPosDiff)
-                            animatedView.animate().x(movement/1.5f).setDuration(0).start();
-                        else {
-                            underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
-                            animatedView.animate().x(movement/1.5f).setDuration(0).start();
-                        }
-                        Log.d(TAG, "Movement is "+movement + " dX "+dX);
+                        moveAndScale(movement, scaleFactor);
                     }
                     break;
                 case MotionEvent.ACTION_UP:
@@ -101,6 +93,15 @@ public class SpringAnimationUtil {
             return true;
         }
     };
+
+    private void moveAndScale(float movement, float scaleFactor) {
+        if (Math.abs(movement) <= finalPosDiff)
+            animatedView.animate().x(movement / 1.5f).setDuration(0).start();
+        else {
+            underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
+            animatedView.animate().x(movement / 1.5f).setDuration(0).start();
+        }
+    }
 
     private static SpringAnimation createSpringAnimation(View view,
                                                          DynamicAnimation.ViewProperty property,
