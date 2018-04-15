@@ -15,6 +15,7 @@ import android.widget.Toast;
 public class SpringAnimationUtil {
 
     private View animatedView;
+    private static final String TAG = SpringAnimationUtil.class.getSimpleName();
 
     private SpringAnimation xAnimation;
     private SpringAnimation reverseXAnim;
@@ -45,9 +46,9 @@ public class SpringAnimationUtil {
         @Override
         public void onGlobalLayout() {
             xAnimation = createSpringAnimation(animatedView, SpringAnimation.X, animatedView.getX()-finalPosDiff,
-                    SpringForce.STIFFNESS_MEDIUM, SpringForce.DAMPING_RATIO_HIGH_BOUNCY);
+                    SpringForce.STIFFNESS_MEDIUM, SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
             reverseXAnim = createSpringAnimation(animatedView, SpringAnimation.X, animatedView.getX(),
-                    SpringForce.STIFFNESS_MEDIUM, SpringForce.DAMPING_RATIO_HIGH_BOUNCY);
+                    SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_NO_BOUNCY);
             Log.d("ANIMATION","POSITION IS "+animatedView.getX()+ " MY POS "+(animatedView.getX()-finalPosDiff));
         }
     };
@@ -64,20 +65,23 @@ public class SpringAnimationUtil {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     float movement = event.getRawX() + dX;
+                    float scaleFactor = movement > 0 ? -0.04f : 0.04f;
                     if (!hiddenViewRevealed && movement < 0) {
                         if (Math.abs(movement) <= finalPosDiff)
-                            animatedView.animate().x(movement).setDuration(0).start();
+                            animatedView.animate().x(movement/1.5f).setDuration(0).start();
                         else {
-                            animatedView.animate().x(movement).setDuration(0).start();
-                            //underLayout.animate().scaleXBy(movement).setDuration(0).start();
+                            underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
+                            animatedView.animate().x(movement/1.5f).setDuration(0).start();
                         }
+                        Log.d(TAG,"Movement Drag to revealy view "+movement+ " dX "+dX);
                     }  else if (hiddenViewRevealed) {
                         if (Math.abs(movement) <= finalPosDiff)
-                            animatedView.animate().x(movement).setDuration(0).start();
+                            animatedView.animate().x(movement/1.5f).setDuration(0).start();
                         else {
-                            animatedView.animate().x(movement).setDuration(0).start();
-                            //underLayout.animate().scaleXBy(movement).setDuration(0).start();
+                            underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
+                            animatedView.animate().x(movement/1.5f).setDuration(0).start();
                         }
+                        Log.d(TAG, "Movement is "+movement + " dX "+dX);
                     }
                     break;
                 case MotionEvent.ACTION_UP:
@@ -91,6 +95,7 @@ public class SpringAnimationUtil {
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
                     }
+                    underLayout.animate().scaleX(1f).setDuration(0).start();
                     break;
             }
             return true;

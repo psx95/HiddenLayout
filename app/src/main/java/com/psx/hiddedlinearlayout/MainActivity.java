@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
                 hiddenLayoutView.closeRightHiddenView();
             }
         });
-        hiddenLayoutView.getInflatedUnderLayout().findViewById(R.id.refresh_tab).setOnClickListener(new View.OnClickListener() {
+        hiddenLayoutView.getInflatedUnderLayout().findViewById(R.id.revealed_view_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hiddenLayoutView.closeRightHiddenView();

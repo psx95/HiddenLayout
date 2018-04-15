@@ -34,7 +34,7 @@
 
             <FrameLayout
                 android:layout_weight="1"
-                android:id="@+id/refresh_tab"
+                android:id="@+id/revealed_view_right"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:background="@color/color_md_orange_900">
