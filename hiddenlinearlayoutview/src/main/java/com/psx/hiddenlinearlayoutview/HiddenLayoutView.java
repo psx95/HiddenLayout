@@ -24,7 +24,6 @@ public class HiddenLayoutView extends LinearLayout{
     private ViewStub under, over;
     private View inflatedUnderLayout, inflatedOverLayout;
     private FlingAnimation flingAnimation;
-    private int nestedTouchLevel;
     private float revealViewPercentageRight;
     public static AnimationUpdateListeners.OverLayoutEventListener overLayoutEventListener;
     public static AnimationUpdateListeners.UnderLayoutEventListener underLayoutEventListener;
@@ -81,7 +80,6 @@ public class HiddenLayoutView extends LinearLayout{
             try {
                 layout_over = typedArray.getResourceId(R.styleable.HiddenLayoutView_layout_over,R.layout.over_layout_default);
                 layout_under = typedArray.getResourceId(R.styleable.HiddenLayoutView_layout_under,R.layout.under_layout_default);
-                nestedTouchLevel = typedArray.getInt(R.styleable.HiddenLayoutView_nestedTouchDetectionLevel,1);
                 revealViewPercentageRight = typedArray.getFloat(R.styleable.HiddenLayoutView_revealPercentageViewRight,0.2f);
             } finally {
                 typedArray.recycle();
