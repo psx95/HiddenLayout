@@ -3,5 +3,7 @@
     <declare-styleable name="HiddenLayoutView">
         <attr name="layout_under" format="reference"/>
         <attr name="layout_over" format="reference"/>
+        <attr name="nestedTouchDetectionLevel" format="integer" />
+        <attr name="revealPercentageViewRight" format="float" />
     </declare-styleable>
 </resources>

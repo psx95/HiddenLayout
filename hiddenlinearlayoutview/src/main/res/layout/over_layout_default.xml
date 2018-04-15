@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/tab_dashboard"
         android:layout_width="match_parent"
@@ -154,18 +155,5 @@
         </FrameLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/effects_frame_current_summary"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.55"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/indeterminateBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-    </FrameLayout>
 </FrameLayout>
 

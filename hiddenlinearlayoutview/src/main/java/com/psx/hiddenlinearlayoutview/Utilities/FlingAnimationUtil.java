@@ -27,10 +27,12 @@ public class FlingAnimationUtil {
     private float pressedX, pressedY;
     private long clickStart = 0L;
     private View.OnTouchListener onTouchListener;
+    private float minValue;
 
-    public FlingAnimationUtil(Context context, View view) {
+    public FlingAnimationUtil(Context context, View view, float revealViewPercentageRight) {
         displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        this.minValue = revealViewPercentageRight;
         createFlingAnimationForHome(view);
         this.activityContext = context;
     }
@@ -38,7 +40,7 @@ public class FlingAnimationUtil {
     private void createFlingAnimationForHome(View v) {
         flingAnimation = new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
                 .setFriction(0.8f)
-                .setMinValue(-displayMetrics.widthPixels / 4)
+                .setMinValue(-displayMetrics.widthPixels*minValue)
                 .setMaxValue(0);
         gestureDetector = new GestureDetector(activityContext, prepareGestureDetectorListener());
         initTouchListener();

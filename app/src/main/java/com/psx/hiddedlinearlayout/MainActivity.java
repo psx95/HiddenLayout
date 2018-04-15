@@ -25,5 +25,18 @@ public class MainActivity extends AppCompatActivity {
                 hiddenLayoutView.closeRightHiddenView();
             }
         });
+        hiddenLayoutView.getInflatedUnderLayout().findViewById(R.id.refresh_tab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hiddenLayoutView.closeRightHiddenView();
+                Toast.makeText(getApplicationContext(),"PRESSED HOME REFRESH",Toast.LENGTH_SHORT).show();
+            }
+        });
+        hiddenLayoutView.getInflatedOverLayout().findViewById(R.id.current_time_home).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"PRESSED TIME",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
