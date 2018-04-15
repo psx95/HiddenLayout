@@ -6,6 +6,7 @@ import android.support.animation.DynamicAnimation;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class SpringAnimationUtil {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity)animatedView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             finalPosDiff = displayMetrics.widthPixels * revealViewPercentageRight;
+            Log.i(TAG,"FInal pos Diff "+finalPosDiff);
             this.animatedView = animatedView;
             this.underLayout = underLayout;
             this.scalehiddenView = scaleHiddenView;
@@ -70,13 +72,19 @@ public class SpringAnimationUtil {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    if ((event.getRawX() + dX) < -10) {
+                    if ((event.getRawX() + dX) < -finalPosDiff/2) {
                         Toast.makeText(context,"X Animation", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,"Anim "+(event.getRawX() + dX));
                         xAnimation.start();
                         hiddenViewRevealed = true;
+                    } else if ((event.getRawX() + dX) < 0 && (event.getRawX() + dX) > -finalPosDiff/2){
+                        Log.d(TAG,"Reverse Anim "+(event.getRawX() + dX));
+                        reverseXAnim.start();
+                        hiddenViewRevealed = false;
                     }
-                    else if ((event.getRawX() + dX) > 10){
+                    else if ((event.getRawX() + dX) > 0){
                         Toast.makeText(context,"Reverse Animation",Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,"reverse Anim "+(event.getRawX() + dX));
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
                     }
