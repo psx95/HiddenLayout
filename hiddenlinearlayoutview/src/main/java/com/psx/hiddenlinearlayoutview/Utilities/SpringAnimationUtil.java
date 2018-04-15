@@ -1,4 +1,4 @@
-package com.psx.hiddenlinearlayoutview.Interfaces;
+package com.psx.hiddenlinearlayoutview.Utilities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 public class SpringAnimationUtil {
@@ -29,31 +28,27 @@ public class SpringAnimationUtil {
     private View underLayout;
     //private float dY;
 
-    public SpringAnimationUtil(Context context, View animatedView, View underLayout, boolean scaleHiddenView) {
+    public SpringAnimationUtil(Context context, View animatedView, float revealViewPercentageRight, View underLayout, boolean scaleHiddenView) {
         if (animatedView != null) {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity)animatedView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            finalPosDiff = displayMetrics.widthPixels/4;
+            finalPosDiff = displayMetrics.widthPixels * revealViewPercentageRight;
+            Log.i(TAG,"FInal pos Diff "+finalPosDiff);
             this.animatedView = animatedView;
             this.underLayout = underLayout;
             this.scalehiddenView = scaleHiddenView;
-            animatedView.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
+            createAnimations();
             this.animatedView.setOnTouchListener(touchListener);
             this.context = context;
         }
     }
 
-    // create X and Y animations for view's initial position once it's known
-    private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-        @Override
-        public void onGlobalLayout() {
-            xAnimation = createSpringAnimation(animatedView, SpringAnimation.X, animatedView.getX()-finalPosDiff,
-                    SpringForce.STIFFNESS_MEDIUM, SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
-            reverseXAnim = createSpringAnimation(animatedView, SpringAnimation.X, animatedView.getX(),
-                    SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_NO_BOUNCY);
-            Log.d("ANIMATION","POSITION IS "+animatedView.getX()+ " MY POS "+(animatedView.getX()-finalPosDiff));
-        }
-    };
+    private void createAnimations() {
+        xAnimation = createSpringAnimation(animatedView, SpringAnimation.X, animatedView.getX()-finalPosDiff,
+                SpringForce.STIFFNESS_MEDIUM, SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
+        reverseXAnim = createSpringAnimation(animatedView, SpringAnimation.X, animatedView.getX(),
+                SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_NO_BOUNCY);
+    }
 
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
@@ -77,13 +72,19 @@ public class SpringAnimationUtil {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    if ((event.getRawX() + dX) < -10) {
+                    if ((event.getRawX() + dX) < -finalPosDiff/2) {
                         Toast.makeText(context,"X Animation", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,"Anim "+(event.getRawX() + dX));
                         xAnimation.start();
                         hiddenViewRevealed = true;
+                    } else if ((event.getRawX() + dX) < 0 && (event.getRawX() + dX) > -finalPosDiff/2){
+                        Log.d(TAG,"Reverse Anim "+(event.getRawX() + dX));
+                        reverseXAnim.start();
+                        hiddenViewRevealed = false;
                     }
-                    else if ((event.getRawX() + dX) > 10){
+                    else if ((event.getRawX() + dX) > 0){
                         Toast.makeText(context,"Reverse Animation",Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,"reverse Anim "+(event.getRawX() + dX));
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
                     }
@@ -118,5 +119,9 @@ public class SpringAnimationUtil {
 
     public SpringAnimation getxAnimation () {
         return xAnimation;
+    }
+
+    public SpringAnimation getReverseXAnim () {
+        return reverseXAnim;
     }
 }

@@ -5,5 +5,9 @@
         <attr name="layout_over" format="reference"/>
         <attr name="revealPercentageViewRight" format="float" />
         <attr name="scaleHiddenView" format="boolean" />
+        <attr name="animationEffect">
+            <enum name="dragWithSpring" value="1"/>
+            <enum name="normalFling" value="2" />
+        </attr>
     </declare-styleable>
 </resources>
