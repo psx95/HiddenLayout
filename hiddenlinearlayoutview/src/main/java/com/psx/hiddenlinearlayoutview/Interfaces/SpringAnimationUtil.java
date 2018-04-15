@@ -22,14 +22,18 @@ public class SpringAnimationUtil {
     private float dX;
     private static float finalPosDiff;
     private Context context;
+
+    private boolean hiddenViewRevealed = false;
+    private View underLayout;
     //private float dY;
 
-    public SpringAnimationUtil(Context context, View animatedView) {
+    public SpringAnimationUtil(Context context, View animatedView, View underLayout) {
         if (animatedView != null) {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity)animatedView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             finalPosDiff = displayMetrics.widthPixels/4;
             this.animatedView = animatedView;
+            this.underLayout = underLayout;
             animatedView.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
             this.animatedView.setOnTouchListener(touchListener);
             this.context = context;
@@ -55,26 +59,37 @@ public class SpringAnimationUtil {
                 case MotionEvent.ACTION_DOWN:
                     // capture the difference between view's top left corner and touch point
                     dX = v.getX() - event.getRawX();
-                    //              dY = v.getY() - event.getRawY();
-                    // cancel animations
                     reverseXAnim.cancel();
                     xAnimation.cancel();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    //  a different approach would be to change the view's LayoutParams.
-                    animatedView.animate()
-                            .x(event.getRawX() + dX)
-                            .setDuration(0)
-                            .start();
+                    float movement = event.getRawX() + dX;
+                    if (!hiddenViewRevealed && movement < 0) {
+                        if (Math.abs(movement) <= finalPosDiff)
+                            animatedView.animate().x(movement).setDuration(0).start();
+                        else {
+                            animatedView.animate().x(movement).setDuration(0).start();
+                            //underLayout.animate().scaleXBy(movement).setDuration(0).start();
+                        }
+                    }  else if (hiddenViewRevealed) {
+                        if (Math.abs(movement) <= finalPosDiff)
+                            animatedView.animate().x(movement).setDuration(0).start();
+                        else {
+                            animatedView.animate().x(movement).setDuration(0).start();
+                            //underLayout.animate().scaleXBy(movement).setDuration(0).start();
+                        }
+                    }
                     break;
                 case MotionEvent.ACTION_UP:
                     if ((event.getRawX() + dX) < -10) {
                         Toast.makeText(context,"X Animation", Toast.LENGTH_SHORT).show();
                         xAnimation.start();
+                        hiddenViewRevealed = true;
                     }
                     else if ((event.getRawX() + dX) > 10){
                         Toast.makeText(context,"Reverse Animation",Toast.LENGTH_SHORT).show();
                         reverseXAnim.start();
+                        hiddenViewRevealed = false;
                     }
                     break;
             }

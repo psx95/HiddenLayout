@@ -74,7 +74,7 @@ public class HiddenLayoutView extends LinearLayout{
     private void setupAnimations() {
         /*FlingAnimationUtil flingAnimationUtil = new FlingAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight);
         flingAnimation = flingAnimationUtil.getFlingAnimation();*/
-        SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout);
+        SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout, inflatedUnderLayout);
         springAnimation = springAnimationUtil.getxAnimation();
     }
 
