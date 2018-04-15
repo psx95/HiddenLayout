@@ -3,6 +3,7 @@ package com.psx.hiddenlinearlayoutview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.animation.FlingAnimation;
+import android.support.animation.SpringAnimation;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.ViewStub;
 import android.widget.LinearLayout;
 
 import com.psx.hiddenlinearlayoutview.Interfaces.AnimationUpdateListeners;
+import com.psx.hiddenlinearlayoutview.Interfaces.SpringAnimationUtil;
 import com.psx.hiddenlinearlayoutview.Utilities.FlingAnimationUtil;
 
 public class HiddenLayoutView extends LinearLayout{
@@ -24,6 +26,7 @@ public class HiddenLayoutView extends LinearLayout{
     private ViewStub under, over;
     private View inflatedUnderLayout, inflatedOverLayout;
     private FlingAnimation flingAnimation;
+    private SpringAnimation springAnimation;
     private float revealViewPercentageRight;
     public static AnimationUpdateListeners.OverLayoutEventListener overLayoutEventListener;
     public static AnimationUpdateListeners.UnderLayoutEventListener underLayoutEventListener;
@@ -69,8 +72,10 @@ public class HiddenLayoutView extends LinearLayout{
     }
 
     private void setupAnimations() {
-        FlingAnimationUtil flingAnimationUtil = new FlingAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight);
-        flingAnimation = flingAnimationUtil.getFlingAnimation();
+        /*FlingAnimationUtil flingAnimationUtil = new FlingAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight);
+        flingAnimation = flingAnimationUtil.getFlingAnimation();*/
+        SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout);
+        springAnimation = springAnimationUtil.getxAnimation();
     }
 
     private void loadPreferencesFromAttributes(AttributeSet attributeSet) {
@@ -90,7 +95,7 @@ public class HiddenLayoutView extends LinearLayout{
     }
 
     public void closeRightHiddenView() {
-        flingAnimation.setStartVelocity(1000).start();
+      //  flingAnimation.setStartVelocity(1000).start();
     }
 
     public View getInflatedUnderLayout() {

@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         app:layout_over="@layout/over_layout"
         app:revealPercentageViewRight="0.25"
-        app:nestedTouchDetectionLevel="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
