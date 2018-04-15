@@ -9,12 +9,18 @@
     <com.psx.hiddenlinearlayoutview.HiddenLayoutView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/hidden"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         app:layout_over="@layout/over_layout"
         app:revealPercentageViewRight="0.25"
         app:animationEffect="dragWithSpring"
         app:scaleHiddenView="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next Activity"
+        android:onClick="moveToNextActivty"/>
 
 </android.support.constraint.ConstraintLayout>

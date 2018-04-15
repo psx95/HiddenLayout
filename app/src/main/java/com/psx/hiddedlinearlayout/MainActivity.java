@@ -1,5 +1,6 @@
 package com.psx.hiddedlinearlayout;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onUnderLayoutClickRecieved(View view) {
                 Toast.makeText(getApplicationContext(),"Pressed View hidden "+view.getId(),Toast.LENGTH_SHORT).show();
-                hiddenLayoutView.closeRightHiddenView();
+                //hiddenLayoutView.closeRightHiddenView();
             }
         });
         hiddenLayoutView.getInflatedOverLayout().findViewById(R.id.current_time_home).setOnClickListener(new View.OnClickListener() {
@@ -31,5 +32,22 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"PRESSED TIME",Toast.LENGTH_SHORT).show();
             }
         });
+        getLifecycle().addObserver(hiddenLayoutView);
+    }
+
+    public void moveToNextActivty(View view) {
+        startActivity(new Intent(this,Main2Activity.class));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("Activity", "OnPausedCalled");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getLifecycle().removeObserver(hiddenLayoutView);
     }
 }

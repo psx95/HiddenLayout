@@ -1,5 +1,8 @@
 package com.psx.hiddenlinearlayoutview;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -18,7 +21,7 @@ import com.psx.hiddenlinearlayoutview.Interfaces.AnimationUpdateListeners;
 import com.psx.hiddenlinearlayoutview.Utilities.FlingAnimationUtil;
 import com.psx.hiddenlinearlayoutview.Utilities.SpringAnimationUtil;
 
-public class HiddenLayoutView extends LinearLayout {
+public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
 
     private static final String TAG = HiddenLayoutView.class.getSimpleName();
     private int layout_over;
@@ -167,5 +170,11 @@ public class HiddenLayoutView extends LinearLayout {
 
     public AnimationUpdateListeners.UnderLayoutEventListener getUnderLayoutEventListener() {
         return underLayoutEventListener;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    private void closeOpenHiddenView (){
+        Log.i(TAG,"Closing View");
+        closeRightHiddenView();
     }
 }
