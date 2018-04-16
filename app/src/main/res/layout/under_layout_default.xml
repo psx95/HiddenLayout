@@ -33,6 +33,12 @@
                 android:layout_weight="1" />
 
             <FrameLayout
+                android:id="@+id/scale"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_md_amber_700" />
+
+            <FrameLayout
                 android:layout_weight="1"
                 android:id="@+id/revealed_view_right"
                 android:layout_width="0dp"

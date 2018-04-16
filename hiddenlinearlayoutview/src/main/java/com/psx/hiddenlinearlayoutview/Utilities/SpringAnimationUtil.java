@@ -9,7 +9,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import com.psx.hiddenlinearlayoutview.R;
 
 public class SpringAnimationUtil {
 
@@ -25,10 +29,12 @@ public class SpringAnimationUtil {
 
     private boolean hiddenViewRevealed = false;
     private boolean scalehiddenView;
-    private View underLayout;
+    private View underLayout, viewToScale = null;
+    private boolean scaleOnlyBg;
+    private View scaleView;
     //private float dY;
 
-    public SpringAnimationUtil(Context context, View animatedView, float revealViewPercentageRight, View underLayout, boolean scaleHiddenView) {
+    public SpringAnimationUtil(Context context, View animatedView, float revealViewPercentageRight, View underLayout, boolean scaleHiddenView, boolean scaleOnlyBg) {
         if (animatedView != null) {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity)animatedView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -36,10 +42,32 @@ public class SpringAnimationUtil {
             Log.i(TAG,"FInal pos Diff "+finalPosDiff);
             this.animatedView = animatedView;
             this.underLayout = underLayout;
+            this.scaleOnlyBg = scaleOnlyBg;
             this.scalehiddenView = scaleHiddenView;
+            scaleView = underLayout.findViewById(R.id.scale);
             createAnimations();
+            setupScaleView();
             this.animatedView.setOnTouchListener(touchListener);
             this.context = context;
+        }
+    }
+
+    private void setupScaleView() {
+        try {
+            if (scaleOnlyBg) {
+                View root = underLayout.getRootView();
+                if (root instanceof ViewGroup) {
+                    int index = ((ViewGroup) root).indexOfChild(underLayout);
+                    FrameLayout frameLayout = new FrameLayout(animatedView.getContext());
+                    frameLayout.setLayoutParams(new FrameLayout.LayoutParams(UtilityFunctions.dpToPx(1, animatedView.getContext()), UtilityFunctions.dpToPx(200,animatedView.getContext())));
+                    frameLayout.setBackgroundColor(animatedView.getContext().getResources().getColor(R.color.color_md_amber_700));
+                    ((ViewGroup) root).addView(frameLayout, index);
+                    viewToScale = frameLayout;
+                    Log.i(TAG, "Added VIew");
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -88,7 +116,10 @@ public class SpringAnimationUtil {
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
                     }
-                    underLayout.animate().scaleX(1f).setDuration(0).start();
+                    if (viewToScale == null)
+                        underLayout.animate().scaleX(1f).setDuration(0).start();
+                    else
+                        scaleView.animate().scaleX(1f).setDuration(0).start();
                     break;
             }
             return true;
@@ -99,7 +130,12 @@ public class SpringAnimationUtil {
         if (Math.abs(movement) <= finalPosDiff)
             animatedView.animate().x(movement / 1.5f).setDuration(0).start();
         else {
-            underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
+            if (viewToScale == null)
+                underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
+            else {
+                Log.d(TAG,"View to Scale "+viewToScale.getWidth() + " "+viewToScale.getHeight());
+                scaleView.animate().scaleXBy(scaleFactor).setDuration(0).start();
+            }
             animatedView.animate().x(movement / 1.5f).setDuration(0).start();
         }
     }

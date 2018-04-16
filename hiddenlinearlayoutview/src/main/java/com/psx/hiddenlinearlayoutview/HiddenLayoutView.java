@@ -34,7 +34,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
     private SpringAnimation springReverseAnim;
     private float revealViewPercentageRight;
     private DynamicAnimation animation, reverseAnimation;
-    private boolean scaleHiddenView;
+    private boolean scaleHiddenView, scaleOnlyBg;
     public static AnimationUpdateListeners.OverLayoutEventListener overLayoutEventListener;
     public static AnimationUpdateListeners.UnderLayoutEventListener underLayoutEventListener;
 
@@ -83,7 +83,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
         switch (animType) {
             case 1:
                 Log.d(TAG,"Spring Animation");
-                SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight, inflatedUnderLayout.findViewById(R.id.revealed_view_right), scaleHiddenView);
+                SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight, inflatedUnderLayout/*.findViewById(R.id.revealed_view_right)*/, scaleHiddenView,scaleOnlyBg);
                 SpringAnimation springAnimation = springAnimationUtil.getxAnimation();
                 if (springAnimation == null)
                     Log.wtf(TAG,"SPringanimation is null");
@@ -112,6 +112,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
                 layout_under = typedArray.getResourceId(R.styleable.HiddenLayoutView_layout_under, R.layout.under_layout_default);
                 revealViewPercentageRight = typedArray.getFloat(R.styleable.HiddenLayoutView_revealPercentageViewRight, 0.2f);
                 scaleHiddenView = typedArray.getBoolean(R.styleable.HiddenLayoutView_scaleHiddenView, false);
+                scaleOnlyBg = typedArray.getBoolean(R.styleable.HiddenLayoutView_scaleOnlyBackground, false);
                 animationType = typedArray.getString(R.styleable.HiddenLayoutView_animationEffect);
                 Log.d(TAG,"Animation typed Array " +animationType);
                 if (animationType == null || animationType.equals(""))

@@ -10,10 +10,12 @@
         android:id="@+id/hidden"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        app:layout_under="@layout/under_layout_default"
         app:layout_over="@layout/over_layout"
         app:revealPercentageViewRight="0.25"
         app:animationEffect="dragWithSpring"
         app:scaleHiddenView="true"
+        app:scaleOnlyBackground="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
