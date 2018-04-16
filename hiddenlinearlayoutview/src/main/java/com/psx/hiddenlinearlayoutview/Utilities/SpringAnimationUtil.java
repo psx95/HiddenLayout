@@ -101,11 +101,13 @@ public class SpringAnimationUtil {
     };
 
     private void moveAndScale(float movement, float scaleFactor) {
-        if (Math.abs(movement) <= finalPosDiff)
-            animatedView.animate().x(movement / 1.5f).setDuration(0).start();
-        else if (Math.abs(movement) <= maxMovement){
-            underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
-            animatedView.animate().x(movement / 1.5f).setDuration(0).start();
+        if (movement<=-5) {
+            if (Math.abs(movement) <= finalPosDiff)
+                animatedView.animate().x(movement / 1.5f).setDuration(0).start();
+            else if (Math.abs(movement) <= maxMovement) {
+                underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
+                animatedView.animate().x(movement / 1.5f).setDuration(0).start();
+            }
         }
     }
 
