@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.psx.hiddenlinearlayoutview.Interfaces.AnimationUpdateListeners;
 import com.psx.hiddenlinearlayoutview.Utilities.FlingAnimationUtil;
@@ -35,8 +36,9 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
     private float revealViewPercentageRight;
     private DynamicAnimation animation, reverseAnimation;
     private boolean scaleHiddenView;
-    public static AnimationUpdateListeners.OverLayoutEventListener overLayoutEventListener;
-    public static AnimationUpdateListeners.UnderLayoutEventListener underLayoutEventListener;
+    public AnimationUpdateListeners.OverLayoutEventListener overLayoutEventListener;
+    public AnimationUpdateListeners.UnderLayoutEventListener underLayoutEventListener;
+    public AnimationUpdateListeners animationUpdateListeners;
     private float maxMovementFactor;
 
     public HiddenLayoutView(Context context) {
@@ -77,6 +79,10 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
 
     private void initListeners() {
         overLayoutEventListener = (view) -> {};
+        animationUpdateListeners = () -> {
+            Toast.makeText(context,"Pulled MAX", Toast.LENGTH_SHORT).show();
+            Log.d(TAG,"Max Pulled");
+        };
     }
 
     private void setupAnimations() {
@@ -84,7 +90,9 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
         switch (animType) {
             case 1:
                 Log.d(TAG,"Spring Animation");
-                SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight, inflatedUnderLayout.findViewById(R.id.revealed_view_right), scaleHiddenView, maxMovementFactor);
+                SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout,
+                        revealViewPercentageRight, inflatedUnderLayout.findViewById(R.id.revealed_view_right),
+                        scaleHiddenView, maxMovementFactor, this);
                 SpringAnimation springAnimation = springAnimationUtil.getxAnimation();
                 if (springAnimation == null)
                     Log.wtf(TAG,"SPringanimation is null");
@@ -93,7 +101,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
                 reverseAnimation = springReverseAnim;
                 break;
             case 2:
-                FlingAnimationUtil flingAnimationUtil = new FlingAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight);
+                FlingAnimationUtil flingAnimationUtil = new FlingAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight, this);
                 FlingAnimation flingAnimation = flingAnimationUtil.getFlingAnimation();
                 flingReverseAnimation = flingAnimation.setStartVelocity(1000);
                 animation = flingAnimation;
@@ -172,6 +180,10 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
 
     public AnimationUpdateListeners.UnderLayoutEventListener getUnderLayoutEventListener() {
         return underLayoutEventListener;
+    }
+
+    public void setAnimationUpdateListeners(AnimationUpdateListeners animationUpdateListeners) {
+        this.animationUpdateListeners = animationUpdateListeners;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)

@@ -28,11 +28,13 @@ public class FlingAnimationUtil {
     private long clickStart = 0L;
     private View.OnTouchListener onTouchListener;
     private float minValue;
+    private HiddenLayoutView hiddenLayoutView;
 
-    public FlingAnimationUtil(Context context, View view, float revealViewPercentageRight) {
+    public FlingAnimationUtil(Context context, View view, float revealViewPercentageRight, HiddenLayoutView hiddenLayoutView) {
         displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         this.minValue = revealViewPercentageRight;
+        this.hiddenLayoutView = hiddenLayoutView;
         createFlingAnimationForHome(view);
         this.activityContext = context;
     }
@@ -65,7 +67,7 @@ public class FlingAnimationUtil {
                     break;
             }
             if (clickOccoured) {
-                HiddenLayoutView.overLayoutEventListener.onOverLayoutClickRecieved(v);
+                hiddenLayoutView.overLayoutEventListener.onOverLayoutClickRecieved(v);
             } else {
                 gestureDetector.onTouchEvent(event);
             }

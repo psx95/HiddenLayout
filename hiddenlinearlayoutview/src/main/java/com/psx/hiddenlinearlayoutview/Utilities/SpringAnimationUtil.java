@@ -11,6 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.psx.hiddenlinearlayoutview.HiddenLayoutView;
+
 public class SpringAnimationUtil {
 
     private View animatedView;
@@ -24,13 +26,14 @@ public class SpringAnimationUtil {
     private Context context;
 
     private boolean hiddenViewRevealed = false;
-    private boolean scalehiddenView;
+    private boolean scalehiddenView, maxReached = false;
     private View underLayout;
     float maxMovement;
+    private HiddenLayoutView hiddenLayoutView;
     //private float dY;
 
     public SpringAnimationUtil(Context context, View animatedView, float revealViewPercentageRight,
-                               View underLayout, boolean scaleHiddenView, float maxMovementFactor) {
+                               View underLayout, boolean scaleHiddenView, float maxMovementFactor, HiddenLayoutView hiddenLayoutView) {
         if (animatedView != null) {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity)animatedView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -38,6 +41,7 @@ public class SpringAnimationUtil {
             maxMovement = maxMovementFactor*finalPosDiff;
             Log.i(TAG,"FInal pos Diff "+finalPosDiff);
             Log.d(TAG,"MaX Movement allowed "+maxMovement);
+            this.hiddenLayoutView = hiddenLayoutView;
             this.animatedView = animatedView;
             this.underLayout = underLayout;
             this.scalehiddenView = scaleHiddenView;
@@ -63,6 +67,7 @@ public class SpringAnimationUtil {
                     dX = v.getX() - event.getRawX();
                     reverseXAnim.cancel();
                     xAnimation.cancel();
+                    maxReached = false;
                     break;
                 case MotionEvent.ACTION_MOVE:
                     float movement = event.getRawX() + dX;
@@ -94,6 +99,9 @@ public class SpringAnimationUtil {
                         hiddenViewRevealed = false;
                     }
                     underLayout.animate().scaleX(1f).setDuration(0).start();
+                    if (Math.abs(event.getRawX() + dX) >= maxMovement) {
+                        hiddenLayoutView.animationUpdateListeners.onMaxSpringPull();
+                    }
                     break;
             }
             return true;
