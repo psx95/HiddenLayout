@@ -27,8 +27,9 @@
                 android:layout_weight="1" />
 
             <FrameLayout
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_width="0dp"
+                android:background="@color/color_md_orange_900"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
