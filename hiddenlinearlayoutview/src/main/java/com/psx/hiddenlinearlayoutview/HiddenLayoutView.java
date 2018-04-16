@@ -37,6 +37,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
     private boolean scaleHiddenView;
     public static AnimationUpdateListeners.OverLayoutEventListener overLayoutEventListener;
     public static AnimationUpdateListeners.UnderLayoutEventListener underLayoutEventListener;
+    private float maxMovementFactor;
 
     public HiddenLayoutView(Context context) {
         super(context);
@@ -83,7 +84,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
         switch (animType) {
             case 1:
                 Log.d(TAG,"Spring Animation");
-                SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight, inflatedUnderLayout.findViewById(R.id.revealed_view_right), scaleHiddenView);
+                SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight, inflatedUnderLayout.findViewById(R.id.revealed_view_right), scaleHiddenView, maxMovementFactor);
                 SpringAnimation springAnimation = springAnimationUtil.getxAnimation();
                 if (springAnimation == null)
                     Log.wtf(TAG,"SPringanimation is null");
@@ -113,6 +114,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
                 revealViewPercentageRight = typedArray.getFloat(R.styleable.HiddenLayoutView_revealPercentageViewRight, 0.2f);
                 scaleHiddenView = typedArray.getBoolean(R.styleable.HiddenLayoutView_scaleHiddenView, false);
                 animationType = typedArray.getString(R.styleable.HiddenLayoutView_animationEffect);
+                maxMovementFactor = typedArray.getFloat(R.styleable.HiddenLayoutView_maxMovementFactorForSpring,2);
                 Log.d(TAG,"Animation typed Array " +animationType);
                 if (animationType == null || animationType.equals(""))
                     animationType = "2";

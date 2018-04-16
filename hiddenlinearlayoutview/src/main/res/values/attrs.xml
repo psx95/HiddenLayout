@@ -9,5 +9,6 @@
             <enum name="dragWithSpring" value="1"/>
             <enum name="normalFling" value="2" />
         </attr>
+        <attr name="maxMovementFactorForSpring" format="float" />
     </declare-styleable>
 </resources>

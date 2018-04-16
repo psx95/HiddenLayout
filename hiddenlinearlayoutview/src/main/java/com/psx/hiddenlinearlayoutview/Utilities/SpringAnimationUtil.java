@@ -26,14 +26,18 @@ public class SpringAnimationUtil {
     private boolean hiddenViewRevealed = false;
     private boolean scalehiddenView;
     private View underLayout;
+    float maxMovement;
     //private float dY;
 
-    public SpringAnimationUtil(Context context, View animatedView, float revealViewPercentageRight, View underLayout, boolean scaleHiddenView) {
+    public SpringAnimationUtil(Context context, View animatedView, float revealViewPercentageRight,
+                               View underLayout, boolean scaleHiddenView, float maxMovementFactor) {
         if (animatedView != null) {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             ((Activity)animatedView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             finalPosDiff = displayMetrics.widthPixels * revealViewPercentageRight;
+            maxMovement = maxMovementFactor*finalPosDiff;
             Log.i(TAG,"FInal pos Diff "+finalPosDiff);
+            Log.d(TAG,"MaX Movement allowed "+maxMovement);
             this.animatedView = animatedView;
             this.underLayout = underLayout;
             this.scalehiddenView = scaleHiddenView;
@@ -62,6 +66,7 @@ public class SpringAnimationUtil {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     float movement = event.getRawX() + dX;
+                    Log.d(TAG,"Movement "+movement);
                     float scaleFactor = movement > 0 ? -0.04f : 0.04f;
                     if (!scalehiddenView)
                         scaleFactor = 0;
@@ -98,7 +103,7 @@ public class SpringAnimationUtil {
     private void moveAndScale(float movement, float scaleFactor) {
         if (Math.abs(movement) <= finalPosDiff)
             animatedView.animate().x(movement / 1.5f).setDuration(0).start();
-        else {
+        else if (Math.abs(movement) <= maxMovement){
             underLayout.animate().scaleXBy(scaleFactor).setDuration(0).start();
             animatedView.animate().x(movement / 1.5f).setDuration(0).start();
         }
