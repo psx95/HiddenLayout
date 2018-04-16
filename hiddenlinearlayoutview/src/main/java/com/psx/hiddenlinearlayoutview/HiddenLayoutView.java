@@ -79,9 +79,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
 
     private void initListeners() {
         overLayoutEventListener = (view) -> {};
-        animationUpdateListeners = () -> {
-            Toast.makeText(context,"Pulled MAX", Toast.LENGTH_SHORT).show();
-            Log.d(TAG,"Max Pulled");
+        animationUpdateListeners = () -> {Log.d(TAG,"Max Pulled");
         };
     }
 

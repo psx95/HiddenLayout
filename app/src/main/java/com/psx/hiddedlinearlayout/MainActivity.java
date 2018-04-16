@@ -23,13 +23,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onUnderLayoutClickRecieved(View view) {
                 Toast.makeText(getApplicationContext(),"Pressed View hidden "+view.getId(),Toast.LENGTH_SHORT).show();
-                //hiddenLayoutView.closeRightHiddenView();
+                hiddenLayoutView.closeRightHiddenView();
             }
         });
         hiddenLayoutView.getInflatedOverLayout().findViewById(R.id.current_time_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"PRESSED TIME",Toast.LENGTH_SHORT).show();
+            }
+        });
+        hiddenLayoutView.setAnimationUpdateListeners(new AnimationUpdateListeners() {
+            @Override
+            public void onMaxSpringPull() {
+                Toast.makeText(getApplicationContext(),"PULLED!!",Toast.LENGTH_SHORT).show();
             }
         });
         getLifecycle().addObserver(hiddenLayoutView);
