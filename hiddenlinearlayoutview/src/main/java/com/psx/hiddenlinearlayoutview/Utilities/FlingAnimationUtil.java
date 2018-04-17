@@ -21,7 +21,7 @@ public class FlingAnimationUtil {
     private static int CLICK_DURATION_IN_MILLIS = 500;
     private static int MOVE_THRESHOLD_IN_DP = 10;
     private DisplayMetrics displayMetrics;
-    private FlingAnimation flingAnimation;
+    private FlingAnimation flingAnimation, reverseFlingAnimation;
     private Context activityContext;
     private GestureDetector gestureDetector;
     private float pressedX, pressedY;
@@ -44,6 +44,11 @@ public class FlingAnimationUtil {
                 .setFriction(0.8f)
                 .setMinValue(-displayMetrics.widthPixels*minValue)
                 .setMaxValue(0);
+        reverseFlingAnimation = new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
+                .setFriction(0.8f)
+                .setMinValue(-displayMetrics.widthPixels*minValue)
+                .setMaxValue(0)
+                .setStartVelocity(1000);
         gestureDetector = new GestureDetector(activityContext, prepareGestureDetectorListener());
         initTouchListener();
         setTouchListenerOnView(v);
@@ -134,6 +139,10 @@ public class FlingAnimationUtil {
 
     public FlingAnimation getFlingAnimation() {
         return flingAnimation;
+    }
+
+    public FlingAnimation getReverseFlingAnimation() {
+        return reverseFlingAnimation;
     }
 }
 

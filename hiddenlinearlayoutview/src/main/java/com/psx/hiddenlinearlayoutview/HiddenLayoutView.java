@@ -23,7 +23,7 @@ import com.psx.hiddenlinearlayoutview.Interfaces.AnimationUpdateListeners;
 import com.psx.hiddenlinearlayoutview.Utilities.FlingAnimationUtil;
 import com.psx.hiddenlinearlayoutview.Utilities.SpringAnimationUtil;
 
-public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
+public class HiddenLayoutView extends LinearLayout implements LifecycleObserver {
 
     private static final String TAG = HiddenLayoutView.class.getSimpleName();
     private int layout_over;
@@ -79,8 +79,10 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
     }
 
     private void initListeners() {
-        overLayoutEventListener = (view) -> {};
-        animationUpdateListeners = () -> {Log.d(TAG,"Max Pulled");
+        overLayoutEventListener = (view) -> {
+        };
+        animationUpdateListeners = () -> {
+            Log.d(TAG, "Max Pulled");
         };
     }
 
@@ -88,13 +90,13 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
         int animType = Integer.parseInt(animationType);
         switch (animType) {
             case 1:
-                Log.d(TAG,"Spring Animation");
+                Log.d(TAG, "Spring Animation");
                 SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout,
                         revealViewPercentageRight, inflatedUnderLayout.findViewById(R.id.revealed_view_right),
                         scaleHiddenView, maxMovementFactor, this);
                 SpringAnimation springAnimation = springAnimationUtil.getxAnimation();
                 if (springAnimation == null)
-                    Log.wtf(TAG,"SPringanimation is null");
+                    Log.wtf(TAG, "SPringanimation is null");
                 springReverseAnim = springAnimationUtil.getReverseXAnim();
                 animation = springAnimation;
                 reverseAnimation = springReverseAnim;
@@ -102,12 +104,12 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
             case 2:
                 FlingAnimationUtil flingAnimationUtil = new FlingAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight, this);
                 FlingAnimation flingAnimation = flingAnimationUtil.getFlingAnimation();
-                flingReverseAnimation = flingAnimation.setStartVelocity(1000);
+                flingReverseAnimation = flingAnimationUtil.getReverseFlingAnimation();
                 animation = flingAnimation;
                 reverseAnimation = flingReverseAnimation;
                 break;
             default:
-                Log.e(TAG,"Unable to resolve Animation "+animation.getClass().getSimpleName());
+                Log.e(TAG, "Unable to resolve Animation " + animation.getClass().getSimpleName());
         }
     }
 
@@ -121,8 +123,8 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
                 revealViewPercentageRight = typedArray.getFloat(R.styleable.HiddenLayoutView_revealPercentageViewRight, 0.2f);
                 scaleHiddenView = typedArray.getBoolean(R.styleable.HiddenLayoutView_scaleHiddenView, false);
                 animationType = typedArray.getString(R.styleable.HiddenLayoutView_animationEffect);
-                maxMovementFactor = typedArray.getFloat(R.styleable.HiddenLayoutView_maxMovementFactorForSpring,2);
-                Log.d(TAG,"Animation typed Array " +animationType);
+                maxMovementFactor = typedArray.getFloat(R.styleable.HiddenLayoutView_maxMovementFactorForSpring, 2);
+                Log.d(TAG, "Animation typed Array " + animationType);
                 if (animationType == null || animationType.equals(""))
                     animationType = "2";
             } finally {
@@ -134,18 +136,10 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
     }
 
     public void closeRightHiddenView() {
-        if (animation instanceof FlingAnimation) {
-            Log.d(TAG,"Animation was fling ");
-            ((FlingAnimation)animation).setStartVelocity(1000f).start();
-            Log.d(TAG,"Started ANimation");
-        }
-        else if (animation instanceof SpringAnimation) {
-            Log.d(TAG,"Animation was spring");
-            springReverseAnim.start();
-            Log.d(TAG,"Started Animation");
-        }
-        else {
-            Log.e(TAG,"Did not recognize animation "+animation.getClass().getSimpleName());
+        if (reverseAnimation != null) {
+            reverseAnimation.start();
+        } else {
+            Log.e(TAG, "Did not recognize animation " + animation.getClass().getSimpleName());
         }
     }
 
@@ -161,7 +155,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
         return animation;
     }
 
-    public DynamicAnimation getReverseAnimationInEffect () {
+    public DynamicAnimation getReverseAnimationInEffect() {
         return reverseAnimation;
     }
 
@@ -185,15 +179,15 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
         this.animationUpdateListeners = animationUpdateListeners;
     }
 
-    public void setDampingAndStiffnessForDragWithSpringForward(float damping, float stiffness){
-        setDampingAndStiffness(animation,damping,stiffness);
+    public void setDampingAndStiffnessForDragWithSpringForward(float damping, float stiffness) {
+        setDampingAndStiffness(animation, damping, stiffness);
     }
 
     public void setDampingAndStiffnessForDragWithSpringReverse(float damping, float stiffness) {
-        setDampingAndStiffness(reverseAnimation,damping,stiffness);
+        setDampingAndStiffness(reverseAnimation, damping, stiffness);
     }
 
-    private void setDampingAndStiffness (DynamicAnimation animation, float damping, float stiffness) {
+    private void setDampingAndStiffness(DynamicAnimation animation, float damping, float stiffness) {
         if (animation instanceof SpringAnimation) {
             ((SpringAnimation) animation).getSpring().setDampingRatio(damping);
             ((SpringAnimation) animation).getSpring().setStiffness(stiffness);
@@ -201,8 +195,8 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    private void closeOpenHiddenView (){
-        Log.i(TAG,"Closing View");
+    private void closeOpenHiddenView() {
+        Log.i(TAG, "Closing View");
         closeRightHiddenView();
     }
 }
