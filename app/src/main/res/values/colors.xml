@@ -5,4 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="color_md_light_green_300">#AED581</color>
     <color name="color_md_light_green_500">#8BC34A</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="default_text_color">#808080</color>
+    <color name="color_md_deep_purple_500">#673AB7</color>
+    <color name="color_md_red_700">#D32F2F</color>
 </resources>
