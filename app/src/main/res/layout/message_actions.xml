@@ -3,13 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:weightSum="4">
+    android:weightSum="6">
 
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
-
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -20,6 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:id="@+id/revealed_view_right"
         android:background="@color/color_md_deep_purple_500">
 
         <TextView
@@ -30,7 +38,7 @@
             android:layout_gravity="center"
             android:text="Hide \n Alerts"
             android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:textSize="16dp" />
     </FrameLayout>
 
     <FrameLayout
@@ -44,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:text="Delete"
             android:textColor="@color/white"/>
     </FrameLayout>

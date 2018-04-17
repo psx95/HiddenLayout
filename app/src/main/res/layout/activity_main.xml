@@ -9,13 +9,13 @@
     <com.psx.hiddenlinearlayoutview.HiddenLayoutView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/hidden"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_over="@layout/over_layout"
-        app:layout_under="@layout/under_layout_default"
-        app:revealPercentageViewRight="0.25"
+        android:layout_height="50dp"
+        app:layout_over="@layout/message_row"
+        app:layout_under="@layout/message_actions"
+        app:revealPercentageViewRight="0.33333"
         app:animationEffect="dragWithSpring"
         app:scaleHiddenView="false"
-        app:maxMovementFactorForSpring="2.5"
+        app:maxMovementFactorForSpring="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

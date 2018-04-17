@@ -27,12 +27,6 @@ public class MainActivity extends AppCompatActivity {
                 hiddenLayoutView.closeRightHiddenView();
             }
         });
-        hiddenLayoutView.getInflatedOverLayout().findViewById(R.id.current_time_home).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"PRESSED TIME",Toast.LENGTH_SHORT).show();
-            }
-        });
         hiddenLayoutView.setAnimationUpdateListeners(new AnimationUpdateListeners() {
             @Override
             public void onMaxSpringPull() {
