@@ -1,6 +1,7 @@
 package com.psx.hiddedlinearlayout;
 
 import android.content.Intent;
+import android.support.animation.SpringForce;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"PULLED!!",Toast.LENGTH_SHORT).show();
             }
         });
+        hiddenLayoutView.setDampingAndStiffnessForDragWithSpringForward(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY,SpringForce.STIFFNESS_LOW);
         getLifecycle().addObserver(hiddenLayoutView);
     }
 

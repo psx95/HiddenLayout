@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.support.animation.DynamicAnimation;
 import android.support.animation.FlingAnimation;
 import android.support.animation.SpringAnimation;
+import android.support.animation.SpringForce;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -182,6 +183,21 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver{
 
     public void setAnimationUpdateListeners(AnimationUpdateListeners animationUpdateListeners) {
         this.animationUpdateListeners = animationUpdateListeners;
+    }
+
+    public void setDampingAndStiffnessForDragWithSpringForward(float damping, float stiffness){
+        setDampingAndStiffness(animation,damping,stiffness);
+    }
+
+    public void setDampingAndStiffnessForDragWithSpringReverse(float damping, float stiffness) {
+        setDampingAndStiffness(reverseAnimation,damping,stiffness);
+    }
+
+    private void setDampingAndStiffness (DynamicAnimation animation, float damping, float stiffness) {
+        if (animation instanceof SpringAnimation) {
+            ((SpringAnimation) animation).getSpring().setDampingRatio(damping);
+            ((SpringAnimation) animation).getSpring().setStiffness(stiffness);
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
