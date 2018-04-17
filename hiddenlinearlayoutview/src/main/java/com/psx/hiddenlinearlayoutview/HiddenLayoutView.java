@@ -6,6 +6,7 @@ import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.Handler;
 import android.support.animation.DynamicAnimation;
 import android.support.animation.FlingAnimation;
 import android.support.animation.SpringAnimation;
@@ -197,6 +198,12 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private void closeOpenHiddenView() {
         Log.i(TAG, "Closing View");
-        closeRightHiddenView();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                closeRightHiddenView();
+            }
+        },200);
     }
 }
