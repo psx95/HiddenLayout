@@ -6,6 +6,7 @@ import android.support.animation.DynamicAnimation;
 import android.support.animation.FlingAnimation;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,14 +30,23 @@ public class FlingAnimationUtil {
     private View.OnTouchListener onTouchListener;
     private float minValue;
     private HiddenLayoutView hiddenLayoutView;
+    private float reverseAnimationStartVelocity;
 
-    public FlingAnimationUtil(Context context, View view, float revealViewPercentageRight, HiddenLayoutView hiddenLayoutView) {
+    public FlingAnimationUtil(Context context, View inflatedOverLayout, float revealViewPercentageRight, HiddenLayoutView hiddenLayoutView) {
         displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         this.minValue = revealViewPercentageRight;
         this.hiddenLayoutView = hiddenLayoutView;
-        createFlingAnimationForHome(view);
         this.activityContext = context;
+        setSpeedForReverseAnimation();
+        createFlingAnimationForHome(inflatedOverLayout);
+    }
+
+    private void setSpeedForReverseAnimation() {
+        float pixelsRevealed = displayMetrics.widthPixels * minValue;
+        float dpsRevealed = UtilityFunctions.convertPixelsToDp(pixelsRevealed,activityContext);
+        reverseAnimationStartVelocity = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpsRevealed, this.activityContext.getResources().getDisplayMetrics());
+        Log.d(TAG,"pixels per second "+reverseAnimationStartVelocity+ " \n pixels revealed "+pixelsRevealed);
     }
 
     private void createFlingAnimationForHome(View v) {
@@ -45,10 +55,10 @@ public class FlingAnimationUtil {
                 .setMinValue(-displayMetrics.widthPixels*minValue)
                 .setMaxValue(0);
         reverseFlingAnimation = new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
-                .setFriction(0.8f)
+                .setFriction(0.001f)
                 .setMinValue(-displayMetrics.widthPixels*minValue)
                 .setMaxValue(0)
-                .setStartVelocity(1000);
+                .setStartVelocity(reverseAnimationStartVelocity);
         gestureDetector = new GestureDetector(activityContext, prepareGestureDetectorListener());
         initTouchListener();
         setTouchListenerOnView(v);
