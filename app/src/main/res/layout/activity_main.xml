@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.psx.hiddenlinearlayoutview.HiddenLayoutView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/hidden"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:layout_over="@layout/message_row"
-        app:layout_under="@layout/message_actions"
-        app:revealPercentageViewRight="0.33333"
-        app:animationEffect="dragWithSpring"
-        app:scaleHiddenView="false"
-        app:maxMovementFactorForSpring="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Next Activity"
-        android:onClick="moveToNextActivty"/>
+        android:layout_gravity="center">
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/fling_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:onClick="moveToFlingActivty"
+            android:text="Hidden Layout with Fling" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:onClick="moveToSpringActivty"
+            android:layout_below="@+id/fling_button"
+            android:text="Hidden Layout with Spring And Drag" />
+
+    </RelativeLayout>
+
+</FrameLayout>

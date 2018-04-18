@@ -18,27 +18,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        hiddenLayoutView = findViewById(R.id.hidden);
-        hiddenLayoutView.setOverLayoutEventListener(view -> Toast.makeText(getApplicationContext(),"Pressed View "+view.getId(),Toast.LENGTH_SHORT).show());
-        hiddenLayoutView.setUnderLayoutEventListener(new AnimationUpdateListeners.UnderLayoutEventListener() {
-            @Override
-            public void onUnderLayoutClickRecieved(View view) {
-                Toast.makeText(getApplicationContext(),"Pressed View hidden "+view.getId(),Toast.LENGTH_SHORT).show();
-                hiddenLayoutView.closeRightHiddenView();
-            }
-        });
-        hiddenLayoutView.setAnimationUpdateListeners(new AnimationUpdateListeners() {
-            @Override
-            public void onMaxSpringPull() {
-                Toast.makeText(getApplicationContext(),"PULLED!!",Toast.LENGTH_SHORT).show();
-            }
-        });
-        hiddenLayoutView.setDampingAndStiffnessForDragWithSpringForward(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY,SpringForce.STIFFNESS_LOW);
-        getLifecycle().addObserver(hiddenLayoutView);
-    }
-
-    public void moveToNextActivty(View view) {
-        startActivity(new Intent(this,Main2Activity.class));
     }
 
     @Override
@@ -51,5 +30,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         getLifecycle().removeObserver(hiddenLayoutView);
+    }
+
+    public void moveToSpringActivty(View view) {
+    }
+
+    public void moveToFlingActivty(View view) {
+        startActivity(new Intent(this,FlingActivity.class));
     }
 }
