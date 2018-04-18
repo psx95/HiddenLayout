@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FlingActivity">
-
+    tools:context=".DragWithSpringActivity">
 
     <com.psx.hiddenlinearlayoutview.HiddenLayoutView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/hidden_fling"
+        android:id="@+id/hidden_spring"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:layout_over="@layout/message_row"
         app:layout_under="@layout/message_actions"
         app:revealPercentageViewRight="0.33333"
-        app:animationEffect="normalFling"
+        app:animationEffect="dragWithSpring"
         app:scaleHiddenView="false"
+        app:maxMovementFactorForSpring="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moveToSpringActivty(View view) {
+        startActivity(new Intent(this,DragWithSpringActivity.class));
     }
 
     public void moveToFlingActivty(View view) {
