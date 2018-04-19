@@ -21,7 +21,8 @@
             android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".FlingActivity" />
-        <activity android:name=".DragWithSpringActivity"></activity>
+        <activity android:name=".DragWithSpringActivity" />
+        <activity android:name=".HiddenLayoutWithRecyclerViewActivity"></activity>
     </application>
 
 </manifest>
