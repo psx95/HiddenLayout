@@ -32,9 +32,11 @@ public class HiddenOptionsRVAdapter extends RecyclerView.Adapter<HiddenOptionsRV
     private AnimationUpdateListeners.OverLayoutEventListener onOverLayout;
     private AnimationUpdateListeners.UnderLayoutEventListener onUnderLayout;
     private Context context;
+    private String animationType;
 
-    public HiddenOptionsRVAdapter (ArrayList<Message> messages){
+    public HiddenOptionsRVAdapter(ArrayList<Message> messages, String animationType){
         this.messages = messages;
+        this.animationType = animationType;
         setupClickListeners();
     }
 
@@ -50,6 +52,8 @@ public class HiddenOptionsRVAdapter extends RecyclerView.Adapter<HiddenOptionsRV
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.hiddenLayoutView.setUnderLayoutEventListener(onUnderLayout);
         holder.hiddenLayoutView.setOverLayoutEventListener(onOverLayout);
+        if (animationType.equals("fling"))
+            holder.hiddenLayoutView.changeAnimation(HiddenLayoutView.ANIMATION_FLING);
         DynamicAnimation dynamicAnimation = holder.hiddenLayoutView.getAnimationInEffect();
         if (dynamicAnimation instanceof SpringAnimation)
             Log.i(TAG,"Spring");
