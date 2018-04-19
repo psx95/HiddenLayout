@@ -79,7 +79,7 @@ public class FlingAnimationUtil {
                     pressedY = event.getY();
                     velocityTracker = VelocityTracker.obtain();
                     velocityTracker.addMovement(event);
-                    return false;
+                    return true;
                 case MotionEvent.ACTION_UP:
                     if (velocityTracker == null)
                         break;
@@ -95,18 +95,28 @@ public class FlingAnimationUtil {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     Log.d(TAG,"ACTION MOVE");
-                    /*if (velocityTracker == null)
+                    if (velocityTracker == null)
                         break;
                     velocityTracker.addMovement(event);
+                    inflatedOverLayout.getParent().requestDisallowInterceptTouchEvent(true);
                     MotionEvent cancelEvent = MotionEvent.obtain(event);
                     cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
                             (event.getActionIndex() <<
                                     MotionEvent.ACTION_POINTER_INDEX_SHIFT));
                     inflatedOverLayout.onTouchEvent(cancelEvent);
-                    cancelEvent.recycle();*/
+                    cancelEvent.recycle();
                     break;
                 case MotionEvent.ACTION_CANCEL:
                     Log.d(TAG,"ACTION CANCEL");
+                    if (velocityTracker == null)
+                        break;
+                    velocityTracker.recycle();
+                    velocityTracker = null;
+                    long clickDuration1 = Calendar.getInstance().getTimeInMillis() - clickStart;
+                    if (clickDuration1 < CLICK_DURATION_IN_MILLIS && UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), activityContext) < MOVE_THRESHOLD_IN_DP) {
+                        Log.d(TAG, " Click duration " + clickDuration1 + " Distance " + UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), activityContext));
+                        clickOccoured = true;
+                    }
                     break;
             }
             if (clickOccoured) {
