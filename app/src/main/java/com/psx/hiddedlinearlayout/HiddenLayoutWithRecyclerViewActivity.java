@@ -23,13 +23,14 @@ public class HiddenLayoutWithRecyclerViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hidden_layout_with_recycler_view);
         recyclerView = findViewById(R.id.list_rv);
+        String tag = getIntent().getStringExtra("TAG");
         prepareDummyDataForMessages(10);
-        setupRecyclerView();
+        setupRecyclerView(tag);
     }
 
-    private void setupRecyclerView() {
+    private void setupRecyclerView(String tag) {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new HiddenOptionsRVAdapter(messageArrayList));
+        recyclerView.setAdapter(new HiddenOptionsRVAdapter(messageArrayList,tag));
     }
 
     private void prepareDummyDataForMessages(int numberOfDummyMessages) {
