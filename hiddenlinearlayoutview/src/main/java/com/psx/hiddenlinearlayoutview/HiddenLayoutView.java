@@ -38,6 +38,8 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
     private float revealViewPercentageRight;
     private DynamicAnimation animation, reverseAnimation;
     private boolean scaleHiddenView;
+    public static final int ANIMATION_FLING = 2;
+    public static final int ANIMATION_DRAG_SPRING = 1;
     public AnimationUpdateListeners.OverLayoutEventListener overLayoutEventListener;
     public AnimationUpdateListeners.UnderLayoutEventListener underLayoutEventListener;
     public AnimationUpdateListeners animationUpdateListeners;
@@ -145,6 +147,11 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
         } else {
             Log.e(TAG, "Did not recognize animation " + animation.getClass().getSimpleName());
         }
+    }
+
+    public void changeAnimation (int animationType) {
+        this.animationType = String.valueOf(animationType);
+        setupAnimations();
     }
 
     public View getInflatedUnderLayout() {
