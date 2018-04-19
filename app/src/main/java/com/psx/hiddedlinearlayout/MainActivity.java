@@ -39,4 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public void moveToFlingActivty(View view) {
         startActivity(new Intent(this,FlingActivity.class));
     }
+
+    public void moveToRecyclerViewActivity(View view) {
+        startActivity(new Intent(this, HiddenLayoutWithRecyclerViewActivity.class));
+    }
 }
