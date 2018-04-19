@@ -76,7 +76,10 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
     }
 
     private void setupListeners() {
+        underLayoutEventListener = view -> {};
+        overLayoutEventListener = view -> {};
         inflatedUnderLayout.setOnClickListener(v -> underLayoutEventListener.onUnderLayoutClickRecieved(v));
+        inflatedOverLayout.setOnClickListener(v -> overLayoutEventListener.onOverLayoutClickRecieved(v));
     }
 
     private void initListeners() {
