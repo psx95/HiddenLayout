@@ -9,6 +9,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -31,6 +32,8 @@ public class FlingAnimationUtil {
     private float minValue;
     private HiddenLayoutView hiddenLayoutView;
     private float reverseAnimationStartVelocity;
+    private VelocityTracker velocityTracker;
+    private View inflatedOverLayout;
 
     public FlingAnimationUtil(Context context, View inflatedOverLayout, float revealViewPercentageRight, HiddenLayoutView hiddenLayoutView) {
         displayMetrics = new DisplayMetrics();
@@ -38,25 +41,26 @@ public class FlingAnimationUtil {
         this.minValue = revealViewPercentageRight;
         this.hiddenLayoutView = hiddenLayoutView;
         this.activityContext = context;
+        this.inflatedOverLayout = inflatedOverLayout;
         setSpeedForReverseAnimation();
         createFlingAnimationForHome(inflatedOverLayout);
     }
 
     private void setSpeedForReverseAnimation() {
         float pixelsRevealed = displayMetrics.widthPixels * minValue;
-        float dpsRevealed = UtilityFunctions.convertPixelsToDp(pixelsRevealed,activityContext);
+        float dpsRevealed = UtilityFunctions.convertPixelsToDp(pixelsRevealed, activityContext);
         reverseAnimationStartVelocity = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpsRevealed, this.activityContext.getResources().getDisplayMetrics());
-        Log.d(TAG,"pixels per second "+reverseAnimationStartVelocity+ " \n pixels revealed "+pixelsRevealed);
+        Log.d(TAG, "pixels per second " + reverseAnimationStartVelocity + " \n pixels revealed " + pixelsRevealed);
     }
 
     private void createFlingAnimationForHome(View v) {
         flingAnimation = new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
                 .setFriction(0.8f)
-                .setMinValue(-displayMetrics.widthPixels*minValue)
+                .setMinValue(-displayMetrics.widthPixels * minValue)
                 .setMaxValue(0);
         reverseFlingAnimation = new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
                 .setFriction(0.001f)
-                .setMinValue(-displayMetrics.widthPixels*minValue)
+                .setMinValue(-displayMetrics.widthPixels * minValue)
                 .setMaxValue(0)
                 .setStartVelocity(reverseAnimationStartVelocity);
         gestureDetector = new GestureDetector(activityContext, prepareGestureDetectorListener());
@@ -69,19 +73,44 @@ public class FlingAnimationUtil {
             boolean clickOccoured = false;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    Log.d(TAG, "Motion Action Down");
                     clickStart = Calendar.getInstance().getTimeInMillis();
                     pressedX = event.getX();
                     pressedY = event.getY();
-                    break;
+                    velocityTracker = VelocityTracker.obtain();
+                    velocityTracker.addMovement(event);
+                    return false;
                 case MotionEvent.ACTION_UP:
+                    if (velocityTracker == null)
+                        break;
+                    velocityTracker.addMovement(event);
+                    Log.d(TAG, "Motion Action Up");
                     long clickDuration = Calendar.getInstance().getTimeInMillis() - clickStart;
                     if (clickDuration < CLICK_DURATION_IN_MILLIS && UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), activityContext) < MOVE_THRESHOLD_IN_DP) {
                         Log.d(TAG, " Click duration " + clickDuration + " Distance " + UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), activityContext));
                         clickOccoured = true;
                     }
+                    velocityTracker.recycle();
+                    velocityTracker = null;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    Log.d(TAG,"ACTION MOVE");
+                    /*if (velocityTracker == null)
+                        break;
+                    velocityTracker.addMovement(event);
+                    MotionEvent cancelEvent = MotionEvent.obtain(event);
+                    cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
+                            (event.getActionIndex() <<
+                                    MotionEvent.ACTION_POINTER_INDEX_SHIFT));
+                    inflatedOverLayout.onTouchEvent(cancelEvent);
+                    cancelEvent.recycle();*/
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    Log.d(TAG,"ACTION CANCEL");
                     break;
             }
             if (clickOccoured) {
+                v.performClick();
                 hiddenLayoutView.overLayoutEventListener.onOverLayoutClickRecieved(v);
             } else {
                 gestureDetector.onTouchEvent(event);
@@ -92,14 +121,14 @@ public class FlingAnimationUtil {
 
     private void setTouchListenerOnView(View v) {
         if (v instanceof ViewGroup) {
-            Log.d(TAG,"FOUND multiple children inside view");
-            for (int i = 0; i < ((ViewGroup)v).getChildCount(); i++){
-                View childView = ((ViewGroup)v).getChildAt(i);
+            Log.d(TAG, "FOUND multiple children inside view");
+            for (int i = 0; i < ((ViewGroup) v).getChildCount(); i++) {
+                View childView = ((ViewGroup) v).getChildAt(i);
                 childView.setOnTouchListener(onTouchListener);
-                Log.d(TAG," ID "+childView.getId() + " found at pos "+i);
+                Log.d(TAG, " ID " + childView.getId() + " found at pos " + i);
             }
         } else {
-            Log.d(TAG,"No Child views");
+            Log.d(TAG, "No Child views");
             v.setOnTouchListener(onTouchListener);
         }
     }
