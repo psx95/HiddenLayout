@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void moveToRecyclerViewActivity(View view) {
-        startActivity(new Intent(this, HiddenLayoutWithRecyclerViewActivity.class));
+        Intent intent = new Intent(this, HiddenLayoutWithRecyclerViewActivity.class);
+        intent.putExtra("TAG",view.getTag().toString());
+        startActivity(intent);
     }
 }

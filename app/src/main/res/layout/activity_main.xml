@@ -29,12 +29,23 @@
             android:text="Hidden Layout with Spring And Drag" />
 
         <Button
+            android:id="@+id/rv_spring"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/spring_button"
             android:layout_margin="10dp"
+            android:tag="spring"
             android:onClick="moveToRecyclerViewActivity"
-            android:text="HiddenLayoutView With RecyclerView"/>
+            android:text="HiddenLayoutView With RecyclerView (SPRING)"/>
+
+        <Button
+            android:tag="fling"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rv_spring"
+            android:layout_margin="10dp"
+            android:onClick="moveToRecyclerViewActivity"
+            android:text="HiddenLayoutView With RecyclerView (FLING)"/>
 
     </RelativeLayout>
 
