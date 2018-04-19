@@ -8,6 +8,7 @@ import android.support.animation.SpringForce;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class SpringAnimationUtil {
     private boolean scalehiddenView, maxReached = false;
     private View underLayout;
     float maxMovement;
+    private VelocityTracker velocityTracker;
     private HiddenLayoutView hiddenLayoutView;
     //private float dY;
 
@@ -68,13 +70,26 @@ public class SpringAnimationUtil {
                     reverseXAnim.cancel();
                     xAnimation.cancel();
                     maxReached = false;
-                    break;
+                    Log.d(TAG,"MOTION ACTION DOWN");
+                    velocityTracker = VelocityTracker.obtain();
+                    velocityTracker.addMovement(event);
+                    return false;
                 case MotionEvent.ACTION_MOVE:
+                    if (velocityTracker == null)
+                        break;
+                    velocityTracker.addMovement(event);
                     float movement = event.getRawX() + dX;
-                    Log.d(TAG,"Movement "+movement);
+                    Log.d(TAG,"Movement Action move"+movement);
                     float scaleFactor = movement > 0 ? -0.04f : 0.04f;
                     if (!scalehiddenView)
                         scaleFactor = 0;
+                    animatedView.getParent().requestDisallowInterceptTouchEvent(true);
+                    MotionEvent cancelEvent = MotionEvent.obtain(event);
+                    cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
+                            (event.getActionIndex() <<
+                                    MotionEvent.ACTION_POINTER_INDEX_SHIFT));
+                    animatedView.onTouchEvent(cancelEvent);
+                    cancelEvent.recycle();
                     if (!hiddenViewRevealed && movement < 0) {
                         moveAndScale(movement, scaleFactor);
                     }  else if (hiddenViewRevealed) {
@@ -82,6 +97,10 @@ public class SpringAnimationUtil {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
+                    if (velocityTracker == null)
+                        break;
+                    velocityTracker.addMovement(event);
+                    Log.d(TAG,"Motion UP ");
                     if ((event.getRawX() + dX) < -finalPosDiff/2) {
                        // Toast.makeText(context,"X Animation", Toast.LENGTH_SHORT).show();
                         Log.d(TAG,"Anim "+(event.getRawX() + dX));
@@ -89,6 +108,38 @@ public class SpringAnimationUtil {
                         hiddenViewRevealed = true;
                     } else if ((event.getRawX() + dX) < 0 && (event.getRawX() + dX) > -finalPosDiff/2){
                        // Log.d(TAG,"Reverse Anim "+(event.getRawX() + dX));
+                        reverseXAnim.start();
+                        hiddenViewRevealed = false;
+                    }
+                    else if ((event.getRawX() + dX) > 0){
+                        Toast.makeText(context,"Reverse Animation",Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,"reverse Anim "+(event.getRawX() + dX));
+                        reverseXAnim.start();
+                        hiddenViewRevealed = false;
+                    }
+                    underLayout.animate().scaleX(1f).setDuration(0).start();
+                    if (Math.abs(event.getRawX() + dX) >= maxMovement) {
+                        hiddenLayoutView.animationUpdateListeners.onMaxSpringPull();
+                    } else {
+                        Log.i(TAG,"Not a max pull event max Movement "+maxMovement +" actual move "+(event.getRawX()+dX));
+                    }
+                    Log.d(TAG,"Motion UP ");
+                    velocityTracker.recycle();
+                    velocityTracker = null;
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    Log.d(TAG,"ACTION CANCEL");
+                    if (velocityTracker == null)
+                        break;
+                    velocityTracker.recycle();
+                    velocityTracker = null;
+                    if ((event.getRawX() + dX) < -finalPosDiff/2) {
+                        // Toast.makeText(context,"X Animation", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,"Anim "+(event.getRawX() + dX));
+                        xAnimation.start();
+                        hiddenViewRevealed = true;
+                    } else if ((event.getRawX() + dX) < 0 && (event.getRawX() + dX) > -finalPosDiff/2){
+                        // Log.d(TAG,"Reverse Anim "+(event.getRawX() + dX));
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
                     }

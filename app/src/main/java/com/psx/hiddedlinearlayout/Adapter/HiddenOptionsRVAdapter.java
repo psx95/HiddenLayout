@@ -1,8 +1,12 @@
 package com.psx.hiddedlinearlayout.Adapter;
 
 import android.content.Context;
+import android.support.animation.DynamicAnimation;
+import android.support.animation.FlingAnimation;
+import android.support.animation.SpringAnimation;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,7 @@ import java.util.Locale;
 
 public class HiddenOptionsRVAdapter extends RecyclerView.Adapter<HiddenOptionsRVAdapter.MyViewHolder> {
 
+    private static final String TAG = HiddenOptionsRVAdapter.class.getSimpleName();
     private ArrayList<Message> messages = new ArrayList<>();
     private AnimationUpdateListeners.OverLayoutEventListener onOverLayout;
     private AnimationUpdateListeners.UnderLayoutEventListener onUnderLayout;
@@ -45,6 +50,13 @@ public class HiddenOptionsRVAdapter extends RecyclerView.Adapter<HiddenOptionsRV
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.hiddenLayoutView.setUnderLayoutEventListener(onUnderLayout);
         holder.hiddenLayoutView.setOverLayoutEventListener(onOverLayout);
+        DynamicAnimation dynamicAnimation = holder.hiddenLayoutView.getAnimationInEffect();
+        if (dynamicAnimation instanceof SpringAnimation)
+            Log.i(TAG,"Spring");
+        else if (dynamicAnimation instanceof FlingAnimation)
+            Log.i(TAG,"Fling");
+        else
+            Log.i(TAG,"NONE");
         View messageRow = holder.hiddenLayoutView.getInflatedOverLayout();
         TextView senderName = messageRow.findViewById(R.id.sender_name);
         TextView sentTime = messageRow.findViewById(R.id.sent_time);
