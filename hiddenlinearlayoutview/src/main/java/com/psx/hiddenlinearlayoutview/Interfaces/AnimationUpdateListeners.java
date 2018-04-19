@@ -12,7 +12,7 @@ public interface AnimationUpdateListeners {
     }
 
     interface UnderLayoutEventListener {
-        default void onUnderLayoutClickRecieved(View view) {};
+        void onUnderLayoutClickRecieved(View view);
     }
 
     void onMaxSpringPull();
