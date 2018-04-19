@@ -1,12 +1,14 @@
 package com.psx.hiddedlinearlayout.Models;
 
+import java.util.Date;
+
 public class Message {
 
     private String senderName;
     private String messagePreview;
-    private String time;
+    private Date time;
 
-    public Message(String senderName, String messagePreview, String time) {
+    public Message(String senderName, String messagePreview, Date time) {
         this.senderName = senderName;
         this.messagePreview = messagePreview;
         this.time = time;
@@ -28,11 +30,11 @@ public class Message {
         this.messagePreview = messagePreview;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 }

@@ -37,7 +37,7 @@ public class HiddenLayoutWithRecyclerViewActivity extends AppCompatActivity {
         Message message;
         for (int i = 1; i<= numberOfDummyMessages; i++) {
             calendar.add(Calendar.DATE,-i);
-            message = new Message("Sender "+i, messagePreview,calendar.getTime().toString());
+            message = new Message("Sender "+i, messagePreview,calendar.getTime());
             messageArrayList.add(message);
         }
     }
