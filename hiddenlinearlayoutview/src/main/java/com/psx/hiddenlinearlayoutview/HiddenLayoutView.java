@@ -4,13 +4,11 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Handler;
 import android.support.animation.DynamicAnimation;
 import android.support.animation.FlingAnimation;
 import android.support.animation.SpringAnimation;
-import android.support.animation.SpringForce;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.psx.hiddenlinearlayoutview.Interfaces.AnimationUpdateListeners;
 import com.psx.hiddenlinearlayoutview.Utilities.FlingAnimationUtil;
@@ -44,6 +41,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
     public AnimationUpdateListeners.UnderLayoutEventListener underLayoutEventListener;
     public AnimationUpdateListeners animationUpdateListeners;
     private float maxMovementFactor;
+    private float flingFriction, flingFrictionReverse;
 
     public HiddenLayoutView(Context context) {
         super(context);
@@ -78,8 +76,10 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
     }
 
     private void setupListeners() {
-        underLayoutEventListener = view -> {};
-        overLayoutEventListener = view -> {};
+        underLayoutEventListener = view -> {
+        };
+        overLayoutEventListener = view -> {
+        };
         inflatedUnderLayout.setOnClickListener(v -> underLayoutEventListener.onUnderLayoutClickRecieved(v));
         inflatedOverLayout.setOnClickListener(v -> overLayoutEventListener.onOverLayoutClickRecieved(v));
     }
@@ -108,7 +108,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
                 reverseAnimation = springReverseAnim;
                 break;
             case 2:
-                FlingAnimationUtil flingAnimationUtil = new FlingAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight, this);
+                FlingAnimationUtil flingAnimationUtil = new FlingAnimationUtil(context, inflatedOverLayout, revealViewPercentageRight, flingFriction, flingFrictionReverse, this);
                 FlingAnimation flingAnimation = flingAnimationUtil.getFlingAnimation();
                 flingReverseAnimation = flingAnimationUtil.getReverseFlingAnimation();
                 animation = flingAnimation;
@@ -130,6 +130,8 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
                 scaleHiddenView = typedArray.getBoolean(R.styleable.HiddenLayoutView_scaleHiddenView, false);
                 animationType = typedArray.getString(R.styleable.HiddenLayoutView_animationEffect);
                 maxMovementFactor = typedArray.getFloat(R.styleable.HiddenLayoutView_maxMovementFactorForSpring, 2);
+                flingFriction = typedArray.getFloat(R.styleable.HiddenLayoutView_flingFriction, 0.8f);
+                flingFrictionReverse = typedArray.getFloat(R.styleable.HiddenLayoutView_flingFrictionReverse, 0.001f);
                 Log.d(TAG, "Animation typed Array " + animationType);
                 if (animationType == null || animationType.equals(""))
                     animationType = "2";
@@ -149,7 +151,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
         }
     }
 
-    public void changeAnimation (String animationType) {
+    public void changeAnimation(String animationType) {
         this.animationType = animationType;
         setupAnimations(animationType);
     }
@@ -198,11 +200,29 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
         setDampingAndStiffness(reverseAnimation, damping, stiffness);
     }
 
+    public void setFlingFriction(float friction) {
+        if (animation instanceof FlingAnimation)
+            ((FlingAnimation) animation).setFriction(friction);
+    }
+
+    public void setFlingReverseFriction(float friction) {
+        if (reverseAnimation instanceof FlingAnimation)
+            ((FlingAnimation) reverseAnimation).setFriction(friction);
+    }
+
     private void setDampingAndStiffness(DynamicAnimation animation, float damping, float stiffness) {
         if (animation instanceof SpringAnimation) {
             ((SpringAnimation) animation).getSpring().setDampingRatio(damping);
             ((SpringAnimation) animation).getSpring().setStiffness(stiffness);
         }
+    }
+
+    public float getFlingFriction() {
+        return flingFriction;
+    }
+
+    public float getFlingFrictionReverse() {
+        return flingFrictionReverse;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
@@ -214,6 +234,6 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
             public void run() {
                 closeRightHiddenView();
             }
-        },200);
+        }, 200);
     }
 }

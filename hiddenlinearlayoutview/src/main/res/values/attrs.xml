@@ -10,5 +10,7 @@
             <enum name="normalFling" value="2" />
         </attr>
         <attr name="maxMovementFactorForSpring" format="float" />
+        <attr name="flingFriction" format="float" />
+        <attr name="flingFrictionReverse" format="float" />
     </declare-styleable>
 </resources>

@@ -34,14 +34,17 @@ public class FlingAnimationUtil {
     private float reverseAnimationStartVelocity;
     private VelocityTracker velocityTracker;
     private View inflatedOverLayout;
+    private float friction, frictionForReverseFling;
 
-    public FlingAnimationUtil(Context context, View inflatedOverLayout, float revealViewPercentageRight, HiddenLayoutView hiddenLayoutView) {
+    public FlingAnimationUtil(Context context, View inflatedOverLayout, float revealViewPercentageRight, float friction, float frictionForReverseFling, HiddenLayoutView hiddenLayoutView) {
         displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         this.minValue = revealViewPercentageRight;
         this.hiddenLayoutView = hiddenLayoutView;
         this.activityContext = context;
         this.inflatedOverLayout = inflatedOverLayout;
+        this.friction = friction;
+        this.frictionForReverseFling = frictionForReverseFling;
         setSpeedForReverseAnimation();
         createFlingAnimationForHome(inflatedOverLayout);
     }
@@ -55,11 +58,11 @@ public class FlingAnimationUtil {
 
     private void createFlingAnimationForHome(View v) {
         flingAnimation = new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
-                .setFriction(0.8f)
+                .setFriction(friction)
                 .setMinValue(-displayMetrics.widthPixels * minValue)
                 .setMaxValue(0);
         reverseFlingAnimation = new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
-                .setFriction(0.001f)
+                .setFriction(frictionForReverseFling)
                 .setMinValue(-displayMetrics.widthPixels * minValue)
                 .setMaxValue(0)
                 .setStartVelocity(reverseAnimationStartVelocity);

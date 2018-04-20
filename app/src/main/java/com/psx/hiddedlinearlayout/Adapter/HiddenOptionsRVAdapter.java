@@ -18,8 +18,6 @@ import com.psx.hiddedlinearlayout.R;
 import com.psx.hiddenlinearlayoutview.HiddenLayoutView;
 import com.psx.hiddenlinearlayoutview.Interfaces.AnimationUpdateListeners;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +26,7 @@ import java.util.Locale;
 public class HiddenOptionsRVAdapter extends RecyclerView.Adapter<HiddenOptionsRVAdapter.MyViewHolder> {
 
     private static final String TAG = HiddenOptionsRVAdapter.class.getSimpleName();
-    private ArrayList<Message> messages = new ArrayList<>();
+    private ArrayList<Message> messages;
     private AnimationUpdateListeners.OverLayoutEventListener onOverLayout;
     private AnimationUpdateListeners.UnderLayoutEventListener onUnderLayout;
     private Context context;
@@ -37,7 +35,6 @@ public class HiddenOptionsRVAdapter extends RecyclerView.Adapter<HiddenOptionsRV
     public HiddenOptionsRVAdapter(ArrayList<Message> messages, String animationType){
         this.messages = messages;
         this.animationType = animationType;
-        setupClickListeners();
     }
 
     @NonNull
@@ -50,10 +47,12 @@ public class HiddenOptionsRVAdapter extends RecyclerView.Adapter<HiddenOptionsRV
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        setupClickListeners(holder.hiddenLayoutView);
         holder.hiddenLayoutView.setUnderLayoutEventListener(onUnderLayout);
         holder.hiddenLayoutView.setOverLayoutEventListener(onOverLayout);
-        if (animationType.equals("fling"))
+        if (animationType.equals("fling")) {
             holder.hiddenLayoutView.changeAnimation(HiddenLayoutView.ANIMATION_FLING);
+        }
         DynamicAnimation dynamicAnimation = holder.hiddenLayoutView.getAnimationInEffect();
         if (dynamicAnimation instanceof SpringAnimation)
             Log.i(TAG,"Spring");
@@ -71,9 +70,12 @@ public class HiddenOptionsRVAdapter extends RecyclerView.Adapter<HiddenOptionsRV
         holder.hiddenLayoutView.setAnimationUpdateListeners(() -> Toast.makeText(context,"Max Pull event",Toast.LENGTH_SHORT).show());
     }
 
-    private void setupClickListeners() {
+    private void setupClickListeners(HiddenLayoutView hiddenLayoutView) {
         onOverLayout = v -> Toast.makeText(context,"Clicked On Revealed View",Toast.LENGTH_SHORT).show();
-        onUnderLayout = view -> Toast.makeText(context,"Clicked On Hidden View",Toast.LENGTH_SHORT).show();
+        onUnderLayout = view -> {
+            hiddenLayoutView.closeRightHiddenView();
+            Toast.makeText(context,"Clicked On Hidden View",Toast.LENGTH_SHORT).show();
+        };
     }
 
     private String changeTimeFormat (Date date) {
@@ -90,7 +92,7 @@ public class HiddenOptionsRVAdapter extends RecyclerView.Adapter<HiddenOptionsRV
 
         HiddenLayoutView hiddenLayoutView;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
             hiddenLayoutView = itemView.findViewById(R.id.hidden_view);
         }
