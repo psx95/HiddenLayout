@@ -53,7 +53,6 @@ public class FlingAnimationUtil {
         float pixelsRevealed = displayMetrics.widthPixels * minValue;
         float dpsRevealed = UtilityFunctions.convertPixelsToDp(pixelsRevealed, activityContext);
         reverseAnimationStartVelocity = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpsRevealed, this.activityContext.getResources().getDisplayMetrics());
-        Log.d(TAG, "pixels per second " + reverseAnimationStartVelocity + " \n pixels revealed " + pixelsRevealed);
     }
 
     private void createFlingAnimationForHome(View inflatedOverLayout) {
@@ -76,7 +75,6 @@ public class FlingAnimationUtil {
             boolean clickOccoured = false;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    Log.d(TAG, "Motion Action Down");
                     clickStart = Calendar.getInstance().getTimeInMillis();
                     pressedX = event.getX();
                     pressedY = event.getY();
@@ -91,17 +89,14 @@ public class FlingAnimationUtil {
                     if (velocityTracker == null)
                         break;
                     velocityTracker.addMovement(event);
-                    Log.d(TAG, "Motion Action Up");
                     long clickDuration = Calendar.getInstance().getTimeInMillis() - clickStart;
                     if (clickDuration < CLICK_DURATION_IN_MILLIS && UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), activityContext) < MOVE_THRESHOLD_IN_DP) {
-                        Log.d(TAG, " Click duration " + clickDuration + " Distance " + UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), activityContext));
                         clickOccoured = true;
                     }
                     velocityTracker.recycle();
                     velocityTracker = null;
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    Log.d(TAG,"ACTION MOVE");
                     if (velocityTracker == null)
                         break;
                     velocityTracker.addMovement(event);
@@ -114,14 +109,12 @@ public class FlingAnimationUtil {
                     cancelEvent.recycle();
                     break;
                 case MotionEvent.ACTION_CANCEL:
-                    Log.d(TAG,"ACTION CANCEL");
                     if (velocityTracker == null)
                         break;
                     velocityTracker.recycle();
                     velocityTracker = null;
                     long clickDuration1 = Calendar.getInstance().getTimeInMillis() - clickStart;
                     if (clickDuration1 < CLICK_DURATION_IN_MILLIS && UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), activityContext) < MOVE_THRESHOLD_IN_DP) {
-                        Log.d(TAG, " Click duration " + clickDuration1 + " Distance " + UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), activityContext));
                         clickOccoured = true;
                     }
                     break;
@@ -138,14 +131,11 @@ public class FlingAnimationUtil {
 
     private void setTouchListenerOnView(View inflatedOverLayout) {
         if (inflatedOverLayout instanceof ViewGroup) {
-            Log.d(TAG, "FOUND multiple children inside view");
             for (int i = 0; i < ((ViewGroup) inflatedOverLayout).getChildCount(); i++) {
                 View childView = ((ViewGroup) inflatedOverLayout).getChildAt(i);
                 childView.setOnTouchListener(onTouchListener);
-                Log.d(TAG, " ID " + childView.getId() + " found at pos " + i);
             }
         } else {
-            Log.d(TAG, "No Child views");
             inflatedOverLayout.setOnTouchListener(onTouchListener);
         }
     }

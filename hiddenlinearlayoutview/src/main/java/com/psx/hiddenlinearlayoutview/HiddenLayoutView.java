@@ -68,7 +68,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
             inflatedUnderLayout = under.inflate();
             inflatedOverLayout = over.inflate();
         } else {
-            Log.d(TAG, "Layout inflater null");
+            Log.e(TAG, "Layout inflater null");
         }
         initListeners();
         setupListeners();
@@ -88,7 +88,6 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
         overLayoutEventListener = (view) -> {
         };
         animationUpdateListeners = () -> {
-            Log.d(TAG, "Max Pulled");
         };
     }
 
@@ -96,13 +95,12 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
         int animType = Integer.parseInt(animationType);
         switch (animType) {
             case 1:
-                Log.d(TAG, "Spring Animation");
                 SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout,
                         revealViewPercentageRight, inflatedUnderLayout,
                         scaleHiddenView, maxMovementFactor, this);
                 SpringAnimation springAnimation = springAnimationUtil.getxAnimation();
                 if (springAnimation == null)
-                    Log.wtf(TAG, "SPringanimation is null");
+                    Log.wtf(TAG, "SpringAnimation is null");
                 springReverseAnim = springAnimationUtil.getReverseXAnim();
                 animation = springAnimation;
                 reverseAnimation = springReverseAnim;
@@ -121,7 +119,6 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
 
     private void loadPreferencesFromAttributes(AttributeSet attributeSet) {
         if (attributeSet != null) {
-            Log.d(TAG, "Attribute set not null");
             TypedArray typedArray = getContext().obtainStyledAttributes(attributeSet, R.styleable.HiddenLayoutView);
             try {
                 layout_over = typedArray.getResourceId(R.styleable.HiddenLayoutView_layout_over, R.layout.over_layout_default);
@@ -132,14 +129,11 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
                 maxMovementFactor = typedArray.getFloat(R.styleable.HiddenLayoutView_maxMovementFactorForSpring, 2);
                 flingFriction = typedArray.getFloat(R.styleable.HiddenLayoutView_flingFriction, 0.8f);
                 flingFrictionReverse = typedArray.getFloat(R.styleable.HiddenLayoutView_flingFrictionReverse, 0.001f);
-                Log.d(TAG, "Animation typed Array " + animationType);
                 if (animationType == null || animationType.equals(""))
                     animationType = "2";
             } finally {
                 typedArray.recycle();
             }
-        } else {
-            Log.d(TAG, "Attribute set is null ");
         }
     }
 
@@ -227,7 +221,6 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private void closeOpenHiddenView() {
-        Log.i(TAG, "Closing View");
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
