@@ -98,7 +98,7 @@ public class HiddenLayoutView extends LinearLayout implements LifecycleObserver 
             case 1:
                 Log.d(TAG, "Spring Animation");
                 SpringAnimationUtil springAnimationUtil = new SpringAnimationUtil(context, inflatedOverLayout,
-                        revealViewPercentageRight, inflatedUnderLayout.findViewById(R.id.revealed_view_right),
+                        revealViewPercentageRight, inflatedUnderLayout,
                         scaleHiddenView, maxMovementFactor, this);
                 SpringAnimation springAnimation = springAnimationUtil.getxAnimation();
                 if (springAnimation == null)

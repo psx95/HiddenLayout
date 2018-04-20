@@ -102,7 +102,6 @@ public class SpringAnimationUtil {
                     velocityTracker.addMovement(event);
                     Log.d(TAG,"Motion UP ");
                     if ((event.getRawX() + dX) < -finalPosDiff/2) {
-                       // Toast.makeText(context,"X Animation", Toast.LENGTH_SHORT).show();
                         Log.d(TAG,"Anim "+(event.getRawX() + dX));
                         xAnimation.start();
                         hiddenViewRevealed = true;
@@ -134,17 +133,14 @@ public class SpringAnimationUtil {
                     velocityTracker.recycle();
                     velocityTracker = null;
                     if ((event.getRawX() + dX) < -finalPosDiff/2) {
-                        // Toast.makeText(context,"X Animation", Toast.LENGTH_SHORT).show();
                         Log.d(TAG,"Anim "+(event.getRawX() + dX));
                         xAnimation.start();
                         hiddenViewRevealed = true;
                     } else if ((event.getRawX() + dX) < 0 && (event.getRawX() + dX) > -finalPosDiff/2){
-                        // Log.d(TAG,"Reverse Anim "+(event.getRawX() + dX));
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
                     }
                     else if ((event.getRawX() + dX) > 0){
-                        Toast.makeText(context,"Reverse Animation",Toast.LENGTH_SHORT).show();
                         Log.d(TAG,"reverse Anim "+(event.getRawX() + dX));
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
