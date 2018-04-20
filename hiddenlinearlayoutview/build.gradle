@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'HiddenLayoutView'
+    bintrayName = 'HiddenLayoutView'
+
+    publishedGroupId = 'com.psx95.hiddenlayoutview'
+    libraryName = 'HiddenLayoutView'
+    artifact = 'hidden-layout-view'
+
+    libraryDescription = 'A library to show hidden layouts with built-in animations'
+
+    siteUrl = 'https://github.com/psx95/HiddenLayout'
+    gitUrl = 'https://github.com/psx95/HiddenLayout.git'
+
+    libraryVersion = '0.1.0'
+
+    developerId = 'psx95'
+    developerName = 'Pranav Sharma'
+    developerEmail = 'pranav.ps95@hotmail.com'
+
+    licenseName = 'MIT License'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+}
+
 android {
     compileSdkVersion 27
 
@@ -36,3 +60,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:support-dynamic-animation:27.1.1'
 }
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
