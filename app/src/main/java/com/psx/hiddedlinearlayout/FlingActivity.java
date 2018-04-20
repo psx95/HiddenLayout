@@ -24,7 +24,7 @@ public class FlingActivity extends AppCompatActivity {
         hiddenLayoutView.setOverLayoutEventListener(view -> Toast.makeText(getApplicationContext(),"Pressed Revealed View "+view.getId(),Toast.LENGTH_SHORT).show());
         hiddenLayoutView.setUnderLayoutEventListener(new AnimationUpdateListeners.UnderLayoutEventListener() {
             @Override
-            public void onUnderLayoutClickRecieved(View view) {
+            public void onUnderLayoutClickReceived(View view) {
                 Toast.makeText(getApplicationContext(),"Pressed View hidden "+view.getId(),Toast.LENGTH_SHORT).show();
                 hiddenLayoutView.closeRightHiddenView();
             }

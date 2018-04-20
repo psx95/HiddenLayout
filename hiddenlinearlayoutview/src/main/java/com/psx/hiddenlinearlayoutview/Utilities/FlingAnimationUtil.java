@@ -56,19 +56,19 @@ public class FlingAnimationUtil {
         Log.d(TAG, "pixels per second " + reverseAnimationStartVelocity + " \n pixels revealed " + pixelsRevealed);
     }
 
-    private void createFlingAnimationForHome(View v) {
-        flingAnimation = new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
+    private void createFlingAnimationForHome(View inflatedOverLayout) {
+        flingAnimation = new FlingAnimation(inflatedOverLayout, DynamicAnimation.TRANSLATION_X)
                 .setFriction(friction)
                 .setMinValue(-displayMetrics.widthPixels * minValue)
                 .setMaxValue(0);
-        reverseFlingAnimation = new FlingAnimation(v, DynamicAnimation.TRANSLATION_X)
+        reverseFlingAnimation = new FlingAnimation(inflatedOverLayout, DynamicAnimation.TRANSLATION_X)
                 .setFriction(frictionForReverseFling)
                 .setMinValue(-displayMetrics.widthPixels * minValue)
                 .setMaxValue(0)
                 .setStartVelocity(reverseAnimationStartVelocity);
         gestureDetector = new GestureDetector(activityContext, prepareGestureDetectorListener());
         initTouchListener();
-        setTouchListenerOnView(v);
+        setTouchListenerOnView(inflatedOverLayout);
     }
 
     private void initTouchListener() {
@@ -80,6 +80,10 @@ public class FlingAnimationUtil {
                     clickStart = Calendar.getInstance().getTimeInMillis();
                     pressedX = event.getX();
                     pressedY = event.getY();
+                    if (flingAnimation!=null)
+                        flingAnimation.cancel();
+                    else if (reverseFlingAnimation!=null)
+                        reverseFlingAnimation.cancel();
                     velocityTracker = VelocityTracker.obtain();
                     velocityTracker.addMovement(event);
                     return true;
@@ -124,7 +128,7 @@ public class FlingAnimationUtil {
             }
             if (clickOccoured) {
                 v.performClick();
-                hiddenLayoutView.overLayoutEventListener.onOverLayoutClickRecieved(v);
+                hiddenLayoutView.overLayoutEventListener.onOverLayoutClickReceived(v);
             } else {
                 gestureDetector.onTouchEvent(event);
             }
@@ -132,17 +136,17 @@ public class FlingAnimationUtil {
         };
     }
 
-    private void setTouchListenerOnView(View v) {
-        if (v instanceof ViewGroup) {
+    private void setTouchListenerOnView(View inflatedOverLayout) {
+        if (inflatedOverLayout instanceof ViewGroup) {
             Log.d(TAG, "FOUND multiple children inside view");
-            for (int i = 0; i < ((ViewGroup) v).getChildCount(); i++) {
-                View childView = ((ViewGroup) v).getChildAt(i);
+            for (int i = 0; i < ((ViewGroup) inflatedOverLayout).getChildCount(); i++) {
+                View childView = ((ViewGroup) inflatedOverLayout).getChildAt(i);
                 childView.setOnTouchListener(onTouchListener);
                 Log.d(TAG, " ID " + childView.getId() + " found at pos " + i);
             }
         } else {
             Log.d(TAG, "No Child views");
-            v.setOnTouchListener(onTouchListener);
+            inflatedOverLayout.setOnTouchListener(onTouchListener);
         }
     }
 
