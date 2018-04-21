@@ -2,9 +2,9 @@ apply plugin: 'com.android.library'
 
 ext {
     bintrayRepo = 'HiddenLayoutView'
-    bintrayName = 'HiddenLayoutView'
+    bintrayName = 'hidden-layout-view'
 
-    publishedGroupId = 'com.psx95.hiddenlayoutview'
+    publishedGroupId = 'com.psx95'
     libraryName = 'HiddenLayoutView'
     artifact = 'hidden-layout-view'
 
