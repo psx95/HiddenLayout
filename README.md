@@ -24,7 +24,7 @@ You're all set.
 
 Fling         |    Spring
 :------------:|:---------------:
-![Screenshot](https://github.com/psx95/HiddenLayout/blob/ps/images/gif/gifs/fling.gif "normalFling Type Animation")|![Screenshot](https://github.com/psx95/HiddenLayout/blob/ps/images/gif/gifs/spring.gif "dragWithSpring Type Animation")
+![Screenshot](https://github.com/psx95/HiddenLayout/blob/master/gifs/fling.gif "normalFling Type Animation")|![Screenshot](https://github.com/psx95/HiddenLayout/blob/master/gifs/spring.gif "dragWithSpring Type Animation")
 *HiddenLyout with Fling Animation*|*HiddenLayout with Spring Animation*
 
 ## Available Attributes - XML
