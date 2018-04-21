@@ -22,10 +22,10 @@ android {
 ```    
 You're all set.
 
-![alt text](https://github.com/psx95/HiddenLayout/tree/master/gifs/fling.gif "normalFling Type Animation")
-*HiddenLayout With Fling Animation*
-![alt text](https://github.com/psx95/HiddenLayout/tree/master/gifs/spring.gif "dragWithSpring Type Animation")
-*HiddenLayout with Spring Animation*
+Fling         |    Spring
+:------------:|:---------------:
+![Screenshot](https://github.com/psx95/HiddenLayout/blob/ps/images/gif/gifs/fling.gif "normalFling Type Animation")|![Screenshot](https://github.com/psx95/HiddenLayout/blob/ps/images/gif/gifs/spring.gif "dragWithSpring Type Animation")
+*HiddenLyout with Fling Animation*|*HiddenLayout with Spring Animation*
 
 ## Available Attributes - XML
 
