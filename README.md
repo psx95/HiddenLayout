@@ -22,6 +22,11 @@ android {
 ```    
 You're all set.
 
+![alt text](https://github.com/psx95/HiddenLayout/tree/master/gifs/fling.gif "normalFling Type Animation")
+*HiddenLayout With Fling Animation*
+![alt text](https://github.com/psx95/HiddenLayout/tree/master/gifs/spring.gif "dragWithSpring Type Animation")
+*HiddenLayout with Spring Animation*
+
 ## Available Attributes - XML
 
 * **layout_over (layout reference)** - This is the layout that will overlap the hidden layout and will contain the view that will be visible initially.
