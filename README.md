@@ -27,6 +27,15 @@ Fling         |    Spring
 ![Screenshot](https://github.com/psx95/HiddenLayout/blob/master/gifs/fling.gif "normalFling Type Animation")|![Screenshot](https://github.com/psx95/HiddenLayout/blob/master/gifs/spring.gif "dragWithSpring Type Animation")
 *HiddenLyout with Fling Animation*|*HiddenLayout with Spring Animation*
 
+### Explanation of working of the above view - 
+The above view is a result of providing the following layouts to the HiddenLayoutView - 
+
+Layout Above     |   Layout Below
+:---------------:|:---------------:
+![layout-above](https://github.com/psx95/HiddenLayout/blob/master/gifs/over-layout.PNG "layout_above")|![layout-below](https://github.com/psx95/HiddenLayout/blob/master/gifs/under-layout.PNG "layout_below")
+*layout-above is provided as an argument to layout_over property*|*layout-below is provided as an argument to layout_under property*
+
+**The layout-above completely overlaps layout-below by default and the view translates with configured animations upon dragging or flinging.**
 ## Available Attributes - XML
 
 * **layout_over (layout reference)** - This is the layout that will overlap the hidden layout and will contain the view that will be visible initially.
