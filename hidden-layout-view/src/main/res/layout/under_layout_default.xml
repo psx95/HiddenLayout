@@ -47,7 +47,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Last Seen"
+                        android:text="Last Synced"
                         android:textSize="11dp"
                         android:gravity="center"
                         android:paddingTop="4dp"

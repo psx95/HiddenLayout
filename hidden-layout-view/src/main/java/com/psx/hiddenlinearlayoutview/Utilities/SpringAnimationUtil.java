@@ -41,8 +41,6 @@ public class SpringAnimationUtil {
             ((Activity)animatedView.getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             finalPosDiff = displayMetrics.widthPixels * revealViewPercentageRight;
             maxMovement = maxMovementFactor*finalPosDiff;
-            Log.i(TAG,"FInal pos Diff "+finalPosDiff);
-            Log.d(TAG,"MaX Movement allowed "+maxMovement);
             this.hiddenLayoutView = hiddenLayoutView;
             this.animatedView = animatedView;
             this.underLayout = underLayout;
@@ -70,7 +68,6 @@ public class SpringAnimationUtil {
                     reverseXAnim.cancel();
                     xAnimation.cancel();
                     maxReached = false;
-                    Log.d(TAG,"MOTION ACTION DOWN");
                     velocityTracker = VelocityTracker.obtain();
                     velocityTracker.addMovement(event);
                     return false;
@@ -79,7 +76,6 @@ public class SpringAnimationUtil {
                         break;
                     velocityTracker.addMovement(event);
                     float movement = event.getRawX() + dX;
-                    Log.d(TAG,"Movement Action move"+movement);
                     float scaleFactor = movement > 0 ? -0.04f : 0.04f;
                     if (!scalehiddenView)
                         scaleFactor = 0;
@@ -100,10 +96,7 @@ public class SpringAnimationUtil {
                     if (velocityTracker == null)
                         break;
                     velocityTracker.addMovement(event);
-                    Log.d(TAG,"Motion UP ");
                     if ((event.getRawX() + dX) < -finalPosDiff/2) {
-                       // Toast.makeText(context,"X Animation", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG,"Anim "+(event.getRawX() + dX));
                         xAnimation.start();
                         hiddenViewRevealed = true;
                     } else if ((event.getRawX() + dX) < 0 && (event.getRawX() + dX) > -finalPosDiff/2){
@@ -112,48 +105,35 @@ public class SpringAnimationUtil {
                         hiddenViewRevealed = false;
                     }
                     else if ((event.getRawX() + dX) > 0){
-                        Toast.makeText(context,"Reverse Animation",Toast.LENGTH_SHORT).show();
-                        Log.d(TAG,"reverse Anim "+(event.getRawX() + dX));
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
                     }
                     underLayout.animate().scaleX(1f).setDuration(0).start();
                     if (Math.abs(event.getRawX() + dX) >= maxMovement) {
                         hiddenLayoutView.animationUpdateListeners.onMaxSpringPull();
-                    } else {
-                        Log.i(TAG,"Not a max pull event max Movement "+maxMovement +" actual move "+(event.getRawX()+dX));
                     }
-                    Log.d(TAG,"Motion UP ");
                     velocityTracker.recycle();
                     velocityTracker = null;
                     break;
                 case MotionEvent.ACTION_CANCEL:
-                    Log.d(TAG,"ACTION CANCEL");
                     if (velocityTracker == null)
                         break;
                     velocityTracker.recycle();
                     velocityTracker = null;
                     if ((event.getRawX() + dX) < -finalPosDiff/2) {
-                        // Toast.makeText(context,"X Animation", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG,"Anim "+(event.getRawX() + dX));
                         xAnimation.start();
                         hiddenViewRevealed = true;
                     } else if ((event.getRawX() + dX) < 0 && (event.getRawX() + dX) > -finalPosDiff/2){
-                        // Log.d(TAG,"Reverse Anim "+(event.getRawX() + dX));
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
                     }
                     else if ((event.getRawX() + dX) > 0){
-                        Toast.makeText(context,"Reverse Animation",Toast.LENGTH_SHORT).show();
-                        Log.d(TAG,"reverse Anim "+(event.getRawX() + dX));
                         reverseXAnim.start();
                         hiddenViewRevealed = false;
                     }
                     underLayout.animate().scaleX(1f).setDuration(0).start();
                     if (Math.abs(event.getRawX() + dX) >= maxMovement) {
                         hiddenLayoutView.animationUpdateListeners.onMaxSpringPull();
-                    } else {
-                        Log.i(TAG,"Not a max pull event max Movement "+maxMovement +" actual move "+(event.getRawX()+dX));
                     }
                     break;
             }
