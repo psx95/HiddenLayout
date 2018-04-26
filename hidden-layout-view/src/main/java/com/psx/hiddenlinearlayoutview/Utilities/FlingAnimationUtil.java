@@ -17,11 +17,12 @@ import com.psx.hiddenlinearlayoutview.HiddenLayoutView;
 
 import java.util.Calendar;
 
+import static com.psx.hiddenlinearlayoutview.Utilities.Constants.CLICK_DURATION_IN_MILLIS;
+import static com.psx.hiddenlinearlayoutview.Utilities.Constants.MOVE_THRESHOLD_IN_DP;
+
 public class FlingAnimationUtil {
 
     private static String TAG = FlingAnimationUtil.class.getSimpleName();
-    private static int CLICK_DURATION_IN_MILLIS = 500;
-    private static int MOVE_THRESHOLD_IN_DP = 10;
     private DisplayMetrics displayMetrics;
     private FlingAnimation flingAnimation, reverseFlingAnimation;
     private Context activityContext;
