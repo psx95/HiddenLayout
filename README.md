@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/psx95/HiddenLayoutView/hidden-layout-view/images/download.svg) ](https://bintray.com/psx95/HiddenLayoutView/hidden-layout-view/_latestVersion)
+
 # HiddenLayout
 A Library to that provides hidden options on swiping with built-in animations. 
 ## What it does
