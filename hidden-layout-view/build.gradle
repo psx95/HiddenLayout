@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/psx95/HiddenLayout'
     gitUrl = 'https://github.com/psx95/HiddenLayout.git'
 
-    libraryVersion = '0.1.0'
+    libraryVersion = '0.1.1'
 
     developerId = 'psx95'
     developerName = 'Pranav Sharma'
