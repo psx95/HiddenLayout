@@ -14,6 +14,11 @@ import android.widget.Toast;
 
 import com.psx.hiddenlinearlayoutview.HiddenLayoutView;
 
+import java.util.Calendar;
+
+import static com.psx.hiddenlinearlayoutview.Utilities.Constants.CLICK_DURATION_IN_MILLIS;
+import static com.psx.hiddenlinearlayoutview.Utilities.Constants.MOVE_THRESHOLD_IN_DP;
+
 public class SpringAnimationUtil {
 
     private View animatedView;
@@ -32,6 +37,9 @@ public class SpringAnimationUtil {
     float maxMovement;
     private VelocityTracker velocityTracker;
     private HiddenLayoutView hiddenLayoutView;
+    private long clickStart = 0L;
+    private float pressedX, pressedY;
+    private View touchedView;
     //private float dY;
 
     public SpringAnimationUtil(Context context, View animatedView, float revealViewPercentageRight,
@@ -61,10 +69,15 @@ public class SpringAnimationUtil {
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            boolean clickOccoured = false;
             switch (event.getActionMasked()){
                 case MotionEvent.ACTION_DOWN:
                     // capture the difference between view's top left corner and touch point
+                    clickStart = System.currentTimeMillis();
+                    pressedX = event.getX();
+                    pressedY = event.getY();
                     dX = v.getX() - event.getRawX();
+                    touchedView = v;
                     reverseXAnim.cancel();
                     xAnimation.cancel();
                     maxReached = false;
@@ -96,6 +109,10 @@ public class SpringAnimationUtil {
                     if (velocityTracker == null)
                         break;
                     velocityTracker.addMovement(event);
+                    long clickDuration = System.currentTimeMillis() - clickStart;
+                    if (clickDuration < CLICK_DURATION_IN_MILLIS && UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), context) < MOVE_THRESHOLD_IN_DP) {
+                        clickOccoured = true;
+                    }
                     if ((event.getRawX() + dX) < -finalPosDiff/2) {
                         xAnimation.start();
                         hiddenViewRevealed = true;
@@ -120,6 +137,10 @@ public class SpringAnimationUtil {
                         break;
                     velocityTracker.recycle();
                     velocityTracker = null;
+                    long clickDuration1 = System.currentTimeMillis() - clickStart;
+                    if (clickDuration1 < CLICK_DURATION_IN_MILLIS && UtilityFunctions.distance(pressedX, pressedY, event.getX(), event.getY(), context) < MOVE_THRESHOLD_IN_DP) {
+                        clickOccoured = true;
+                    }
                     if ((event.getRawX() + dX) < -finalPosDiff/2) {
                         xAnimation.start();
                         hiddenViewRevealed = true;
@@ -136,6 +157,10 @@ public class SpringAnimationUtil {
                         hiddenLayoutView.animationUpdateListeners.onMaxSpringPull();
                     }
                     break;
+            }
+            if (clickOccoured) {
+                //v.performClick();
+                hiddenLayoutView.overLayoutEventListener.onOverLayoutClickReceived(touchedView);
             }
             return true;
         }
